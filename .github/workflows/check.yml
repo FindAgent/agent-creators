@@ -1,0 +1,31 @@
+name: check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Generated adapters are up to date
+        run: node scripts/build-adapters.mjs --check
+      - name: Plugin manifests parse and agree
+        run: |
+          node -e "
+            const a=require('./plugin.json'), b=require('./.claude-plugin/plugin.json');
+            for (const k of ['name','version','description','license']) {
+              if (!a[k]) throw new Error('plugin.json missing '+k);
+              if (a[k] !== b[k]) throw new Error('plugin.json and .claude-plugin/plugin.json disagree on '+k);
+            }
+          "
+      - name: No secret-shaped strings
+        run: |
+          if grep -rIEn "(sk-[A-Za-z0-9]{20,}|ghp_[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16}|-----BEGIN [A-Z ]*PRIVATE KEY)" . --exclude-dir=.git --exclude-dir=.github; then
+            echo "secret-shaped string found"; exit 1
+          fi

@@ -1,0 +1,10 @@
+---
+description: Build a FindAgent agent (code agent, skills package, actions, department or MCP listing)
+alwaysApply: false
+---
+
+# FindAgent agent creators
+
+This repository builds FindAgent agents. Cursor loads this rule when the request is about building a FindAgent agent.
+
+Start from `AGENTS.md`: it lists the playbooks (`playbooks/agents/*.md`) and commands (`playbooks/commands/*.md`). Read the playbook that matches the request in full and follow it. Never submit or publish for the user.

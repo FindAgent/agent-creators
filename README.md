@@ -12,19 +12,36 @@ Every FindAgent agent is one package made of four parts: **Instructions**, **Ski
 | `department-creator` | A **Department**: a team of published agents with a topology, workflow or orchestrator | `/new-department` |
 | `mcp-listing-creator` | An **MCP server listing** for a server somebody already runs | `/new-mcp-listing` |
 
-Plus `/check-agent` (lints a manifest with `npx @findagent/cli lint`) and three skills the creators share: `agent-plugins-format`, `code-agent-contract`, `submit-new-agent`.
+Plus `/check-agent` (or `node scripts/check-agent.mjs`, which lints a manifest with `npx @findagent/cli lint`) and three skills the creators share: `agent-plugins-format`, `code-agent-contract`, `submit-new-agent`.
 
-## Use it
+## Use it with any assistant
 
-Clone the repository, then either copy `agents/`, `commands/` and `skills/` into your project's `.claude/`, or start Claude Code with `claude --plugin-dir <path-to-this-repo>`.
+The creators are plain Markdown **playbooks** plus two Node scripts, so they work with any LLM provider that can read files and run commands. `AGENTS.md` is the entry point and lists every playbook.
 
-Then, for a code agent:
+| Assistant | How it picks this up |
+|---|---|
+| Claude Code | `claude --plugin-dir <this repo>`, or copy `agents/`, `commands/`, `skills/` into `.claude/` |
+| Codex, Cursor, Copilot, Gemini CLI, Aider, others | Open this repo (or copy it into yours): they read `AGENTS.md`, `.cursor/rules/`, `.github/copilot-instructions.md`, `GEMINI.md` or `CONVENTIONS.md`, which all point at `playbooks/` |
+| Anything else | Tell the model: "read AGENTS.md, then follow playbooks/agents/code-agent-creator.md" |
+
+Then ask for the agent, for example:
 
 ```
-/new-code-agent a tool that checks the health of a GitHub repository, node
+Build a code agent that checks the health of a GitHub repository, in node.
+Follow playbooks/agents/code-agent-creator.md.
 ```
 
-The creator starts from the reference template, [FindAgent/agent-template](https://github.com/FindAgent/agent-template), builds and tests the agent in your own repository, lints the manifest and stops. **No creator submits or publishes anything.** You submit at [findagent.cloud/submit](https://findagent.cloud/submit); the submission is scanned and reviewed by a person.
+(Claude Code users can type `/new-code-agent <idea>` instead.) The creator starts from the reference template, [FindAgent/agent-template](https://github.com/FindAgent/agent-template), builds and tests the agent in your own repository, lints the manifest and stops. **No creator submits or publishes anything.** You submit at [findagent.cloud/submit](https://findagent.cloud/submit); the submission is scanned and reviewed by a person.
+
+## Scripts
+
+```
+node scripts/check-agent.mjs <path to findagent.json>   # lint with the marketplace's own validator
+node scripts/build-adapters.mjs                         # regenerate playbooks/ and the per-assistant files
+node scripts/build-adapters.mjs --check                 # CI: fail when they are stale
+```
+
+`agents/` and `commands/` are the source; `playbooks/`, `AGENTS.md`, `GEMINI.md`, `CONVENTIONS.md`, `.github/copilot-instructions.md` and `.cursor/rules/` are generated from them.
 
 ## What they will not do
 
