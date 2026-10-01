@@ -2,7 +2,7 @@
 
 > Designs a FindAgent Department — a team of 2-16 published agents with a hub, pipeline or peer-to-peer topology (or a workflow / orchestrator), per-member roles, report instructions and flow hints — as a valid findagent/department/v1 manifest, checked against the real schema and member eligibility. Use when asked to compose agents into a team or to port an existing multi-agent setup. A department is built from agents that already exist and are published; for those use the other creators first. Does NOT create or publish anything; you decide when to submit.
 
-Follow this playbook as the working instructions for the task. It is plain Markdown and works in any assistant that can read files, run shell commands and browse public pages.
+Follow this playbook as the working instructions for the task. It is plain Markdown and works in any assistant that can read files and run shell commands. See "Requirements" in `AGENTS.md` for what it expects the assistant to have.
 
 # Department creator
 
@@ -60,15 +60,15 @@ Decisions, with the platform's reasons:
 
 ## 5. Gates (paste real output)
 
-1. Build the manifest and lint it with `npx --yes @findagent/cli lint <department-manifest>`. Paste the result, including the per-topology member cap (p2p 8, others 16).
-2. Prove each member exists, is published and is eligible (section 2) by reading the catalogue (`findagent_get_agent` / the DB read you allows). A member that is a listing, a local-only code agent or unpublished fails the design.
+1. Build the manifest and lint it with `npx --yes @findagent/cli@0.4.0 lint <department-manifest>`. Paste the result, including the per-topology member cap (p2p 8, others 16).
+2. Prove each member exists, is published and is eligible (section 2) by reading the catalogue (`findagent_get_agent` / the database read your tools allow). A member that is a listing, a local-only code agent or unpublished fails the design.
 3. Check role overlap: list each member's tools and say which goal step each serves; a member with no step is removed.
 4. For `workflow` / `orchestrator`, show the path a sample goal takes member by member and which `when` conditions fire.
 
 ## 6. Handoff
 
-You never create the department. Hand you: the manifest JSON, the validation output, the member table, and the creation route: the web builder `https://findagent.cloud/departments/new` (behind the `departments` flag, admin-open) or `POST /api/departments`; afterwards `findagent_edit_department` can change only `report_instructions`, and composition changes go through the builder. Report every doubt (a member whose tools do not fit the role, an undeclared dependency).
+You never create the department. Hand the user: the manifest JSON, the validation output, the member table, and the creation route: the web builder `https://findagent.cloud/departments/new` (behind the `departments` flag, admin-open) or `POST /api/departments`; afterwards `findagent_edit_department` can change only `report_instructions`, and composition changes go through the builder. Report every doubt (a member whose tools do not fit the role, an undeclared dependency).
 
 ## Manifest gate (run before you report)
 
-Validate the manifest with the same validator the marketplace runs at submit: `npx --yes @findagent/cli lint <path-to-manifest>` (pure local, no network, no account). Paste its output verbatim; every error must be fixed at the source. Then run the live checks this file lists. Background skills: `agent-plugins-format`, `code-agent-contract`, `submit-new-agent`.
+Validate the manifest with the same validator the marketplace runs at submit: `npx --yes @findagent/cli@0.4.0 lint <path-to-manifest>` (no account or login; the first run downloads the CLI package, so it needs network once, or run it from a local clone of the CLI). Paste its output verbatim; every error must be fixed at the source. Then run the live checks this file lists. Background skills: `skills/agent-plugins-format/SKILL.md`, `skills/code-agent-contract/SKILL.md`, `skills/submit-new-agent/SKILL.md`.

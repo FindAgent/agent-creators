@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "findagent": {
+      "url": "https://mcp.findagent.cloud/mcp"
+    }
+  }
+}

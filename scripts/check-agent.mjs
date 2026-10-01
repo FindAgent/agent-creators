@@ -13,7 +13,9 @@ if (!target || !existsSync(target)) {
   process.exit(2)
 }
 
+// Pinned so a lint result is reproducible; bump together with the playbooks.
+const CLI = '@findagent/cli@0.4.0'
 const npx = process.platform === 'win32' ? 'npx.cmd' : 'npx'
-const run = spawnSync(npx, ['--yes', '@findagent/cli', 'lint', target], { stdio: 'inherit', shell: process.platform === 'win32' })
+const run = spawnSync(npx, ['--yes', CLI, 'lint', target], { stdio: 'inherit', shell: process.platform === 'win32' })
 
 process.exit(run.status ?? 1)

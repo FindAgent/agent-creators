@@ -2,7 +2,7 @@
 
 > Builds the INSTRUCTIONS and SKILLS part of a FindAgent agent as a valid Agent Plugins 1.0 package (plugin.json, skills/<id>/SKILL.md, commands/, agents/) with no code, scan-clean and ready for the /submit Upload / GitHub / Editor doors or the MCP package tools. Use when asked to create or port a skills / instructions / prompt-only agent or a Claude, Codex, Cursor or Gemini plugin. Not for agents that call APIs (actions-agent-creator) or ship code (code-agent-creator). Does NOT submit or publish; you decide when to submit.
 
-Follow this playbook as the working instructions for the task. It is plain Markdown and works in any assistant that can read files, run shell commands and browse public pages.
+Follow this playbook as the working instructions for the task. It is plain Markdown and works in any assistant that can read files and run shell commands. See "Requirements" in `AGENTS.md` for what it expects the assistant to have.
 
 # Package agent creator
 
@@ -63,9 +63,9 @@ Rules the platform enforces (each one measured, not guessed):
 ## 5. Handoff
 
 - Never submit or publish. Report: repo, sha, file tree, the validator output, the normalizer output, every deferral or doubt.
-- Tell you how to submit: web `https://findagent.cloud/submit` (Upload a zip/folder, or the GitHub door), or the MCP tools `findagent_create_package_draft` (files as text) then `findagent_submit_for_review`; a new version of a live agent goes through `findagent_reupload`. The creator attests the files are their own; the package is scanned and a human reviews it. A platform admin's own submission auto-approves on a clean scan; everyone else waits for human review.
+- Tell the user how to submit: web `https://findagent.cloud/submit` (Upload a zip/folder, or the GitHub door), or the MCP tools `findagent_create_package_draft` (files as text) then `findagent_submit_for_review`; a new version of a live agent goes through `findagent_reupload`. The creator attests the files are their own; the package is scanned and a human reviews it. A platform admin's own submission auto-approves on a clean scan; everyone else waits for human review.
 - Commit under your own identity.
 
 ## Manifest gate (run before you report)
 
-Validate the manifest with the same validator the marketplace runs at submit: `npx --yes @findagent/cli lint <path-to-manifest>` (pure local, no network, no account). Paste its output verbatim; every error must be fixed at the source. Then run the live checks this file lists. Background skills: `agent-plugins-format`, `code-agent-contract`, `submit-new-agent`.
+Validate the manifest with the same validator the marketplace runs at submit: `npx --yes @findagent/cli@0.4.0 lint <path-to-manifest>` (no account or login; the first run downloads the CLI package, so it needs network once, or run it from a local clone of the CLI). Paste its output verbatim; every error must be fixed at the source. Then run the live checks this file lists. Background skills: `skills/agent-plugins-format/SKILL.md`, `skills/code-agent-contract/SKILL.md`, `skills/submit-new-agent/SKILL.md`.

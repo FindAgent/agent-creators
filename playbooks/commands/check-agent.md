@@ -4,4 +4,4 @@
 
 # /check-agent
 
-Run `npx --yes @findagent/cli lint the user's request` and report its output verbatim. It is pure local validation: no network, no account, nothing submitted. Fix every error at the source file and run it again. A clean lint is the schema gate only; it does not replace the live run, the build on https://findagent.cloud/submit, or the human review.
+Run `npx --yes @findagent/cli@0.4.0 lint <path to the manifest>` and report its output verbatim. It needs no account and submits nothing; the first run downloads the CLI package, so it needs network once. Fix every error at the source file and run it again. A clean lint is the schema gate only; it does not replace the live run, the build on https://findagent.cloud/submit, or the human review.

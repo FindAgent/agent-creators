@@ -59,15 +59,15 @@ Decisions, with the platform's reasons:
 
 ## 5. Gates (paste real output)
 
-1. Build the manifest and lint it with `npx --yes @findagent/cli lint <department-manifest>`. Paste the result, including the per-topology member cap (p2p 8, others 16).
-2. Prove each member exists, is published and is eligible (section 2) by reading the catalogue (`findagent_get_agent` / the DB read you allows). A member that is a listing, a local-only code agent or unpublished fails the design.
+1. Build the manifest and lint it with `npx --yes @findagent/cli@0.4.0 lint <department-manifest>`. Paste the result, including the per-topology member cap (p2p 8, others 16).
+2. Prove each member exists, is published and is eligible (section 2) by reading the catalogue (`findagent_get_agent` / the database read your tools allow). A member that is a listing, a local-only code agent or unpublished fails the design.
 3. Check role overlap: list each member's tools and say which goal step each serves; a member with no step is removed.
 4. For `workflow` / `orchestrator`, show the path a sample goal takes member by member and which `when` conditions fire.
 
 ## 6. Handoff
 
-You never create the department. Hand you: the manifest JSON, the validation output, the member table, and the creation route: the web builder `https://findagent.cloud/departments/new` (behind the `departments` flag, admin-open) or `POST /api/departments`; afterwards `findagent_edit_department` can change only `report_instructions`, and composition changes go through the builder. Report every doubt (a member whose tools do not fit the role, an undeclared dependency).
+You never create the department. Hand the user: the manifest JSON, the validation output, the member table, and the creation route: the web builder `https://findagent.cloud/departments/new` (behind the `departments` flag, admin-open) or `POST /api/departments`; afterwards `findagent_edit_department` can change only `report_instructions`, and composition changes go through the builder. Report every doubt (a member whose tools do not fit the role, an undeclared dependency).
 
 ## Manifest gate (run before you report)
 
-Validate the manifest with the same validator the marketplace runs at submit: `npx --yes @findagent/cli lint <path-to-manifest>` (pure local, no network, no account). Paste its output verbatim; every error must be fixed at the source. Then run the live checks this file lists. Background skills: `agent-plugins-format`, `code-agent-contract`, `submit-new-agent`.
+Validate the manifest with the same validator the marketplace runs at submit: `npx --yes @findagent/cli@0.4.0 lint <path-to-manifest>` (no account or login; the first run downloads the CLI package, so it needs network once, or run it from a local clone of the CLI). Paste its output verbatim; every error must be fixed at the source. Then run the live checks this file lists. Background skills: `agent-plugins-format`, `code-agent-contract`, `submit-new-agent`.

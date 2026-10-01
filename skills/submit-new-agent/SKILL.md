@@ -11,4 +11,4 @@ description: How a new FindAgent agent actually gets submitted and what runs on 
 
 **After submit:** scan (automated), then human review. Only an admin's own submission auto-approves on a clean scan, which is a live listing; anyone else waits for review. A rejected or needs-changes draft returns with the reason.
 
-**Rules of thumb:** pick the Discipline and a sub-discipline yourself (a top level with no sub is refused); keep example prompts real; never put a secret in any file; lint the manifest with `npx --yes @findagent/cli lint` first.
+**Rules of thumb:** pick the Discipline and a sub-discipline yourself (a top level with no sub is refused); keep example prompts real; never put a secret in any file; lint the manifest with `npx --yes @findagent/cli@0.4.0 lint` first.

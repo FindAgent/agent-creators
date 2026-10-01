@@ -1,10 +1,10 @@
 # FindAgent agent creators
 
-Subagents, commands and skills that help you build the parts of a [FindAgent](https://findagent.cloud) agent. This repository is itself an **Agent Plugins 1.0** package ([agent-plugins.org](https://agent-plugins.org)), so you can install it as a plugin or copy the files you need.
+Playbooks, commands and skills that help any AI assistant build the parts of a [FindAgent](https://findagent.cloud) agent. This repository is itself an **Agent Plugins 1.0** package ([agent-plugins.org](https://agent-plugins.org)), so you can install it as a plugin or copy the files you need.
 
 Every FindAgent agent is one package made of four parts: **Instructions**, **Skills**, **Actions** and **Code**. There is one creator for each way of building one:
 
-| Subagent | Builds | Command |
+| Creator (playbook) | Builds | Claude Code command |
 |---|---|---|
 | `code-agent-creator` | A **code agent**: a Node or Python MCP server with the six entry tools, `findagent.json` and an optional display-only panel | `/new-code-agent` |
 | `package-agent-creator` | **Instructions + Skills**: a package of `SKILL.md` files, commands and sub-agents, no code | `/new-package-agent` |
@@ -31,7 +31,7 @@ Build a code agent that checks the health of a GitHub repository, in node.
 Follow playbooks/agents/code-agent-creator.md.
 ```
 
-(Claude Code users can type `/new-code-agent <idea>` instead.) The creator starts from the reference template, [FindAgent/agent-template](https://github.com/FindAgent/agent-template), builds and tests the agent in your own repository, lints the manifest and stops. **No creator submits or publishes anything.** You submit at [findagent.cloud/submit](https://findagent.cloud/submit); the submission is scanned and reviewed by a person.
+(Claude Code users can type `/new-code-agent <idea>` instead.) Every assistant gets the FindAgent platform MCP from `mcp.json` (also `.mcp.json`, `.cursor/mcp.json`, `.vscode/mcp.json`), so it can also create the draft over MCP. The creator starts from the reference template, [FindAgent/agent-template](https://github.com/FindAgent/agent-template), builds and tests the agent in your own repository, lints the manifest and stops. **No creator submits or publishes anything.** You submit at [findagent.cloud/submit](https://findagent.cloud/submit); the submission is scanned and reviewed by a person.
 
 ## Scripts
 

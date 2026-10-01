@@ -1,7 +1,7 @@
 {
   "name": "findagent-agent-creators",
   "version": "1.0.0",
-  "description": "Subagents, commands and skills that build the parts of a FindAgent agent: code agents (Node or Python), instruction and skill packages, API actions, departments and MCP server listings.",
+  "description": "Playbooks, commands and skills (usable from any AI assistant) that build the parts of a FindAgent agent: code agents (Node or Python), instruction and skill packages, API actions, departments and MCP server listings.",
   "license": "MIT",
   "homepage": "https://findagent.cloud/docs/creator-guide",
   "repository": "https://github.com/FindAgent/agent-creators"

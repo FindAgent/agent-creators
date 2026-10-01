@@ -15,15 +15,23 @@ jobs:
           node-version: 22
       - name: Generated adapters are up to date
         run: node scripts/build-adapters.mjs --check
-      - name: Plugin manifests parse and agree
+      - name: Plugin manifests parse and agree on every key
         run: |
           node -e "
             const a=require('./plugin.json'), b=require('./.claude-plugin/plugin.json');
-            for (const k of ['name','version','description','license']) {
-              if (!a[k]) throw new Error('plugin.json missing '+k);
-              if (a[k] !== b[k]) throw new Error('plugin.json and .claude-plugin/plugin.json disagree on '+k);
+            for (const k of Object.keys(b)) {
+              if (JSON.stringify(a[k]) !== JSON.stringify(b[k])) throw new Error('plugin.json and .claude-plugin/plugin.json disagree on '+k);
             }
+            for (const k of ['name','version','description','license']) if (!a[k]) throw new Error('plugin.json missing '+k);
           "
+      - name: Neutral layer has no assistant-only wording
+        run: |
+          if grep -rEn '\$ARGUMENTS|[Ss]ubagent|Dispatch the' playbooks AGENTS.md CONVENTIONS.md GEMINI.md CLAUDE.md .github/copilot-instructions.md .cursor/rules; then
+            echo 'assistant-only wording in the generated neutral layer'; exit 1
+          fi
+      - name: MCP client configs are valid JSON
+        run: |
+          for f in mcp.json .mcp.json .cursor/mcp.json .vscode/mcp.json; do node -e "JSON.parse(require('fs').readFileSync('$f','utf8'))" || exit 1; done
       - name: No secret-shaped strings
         run: |
           if grep -rIEn "(sk-[A-Za-z0-9]{20,}|ghp_[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16}|-----BEGIN [A-Z ]*PRIVATE KEY)" . --exclude-dir=.git --exclude-dir=.github; then

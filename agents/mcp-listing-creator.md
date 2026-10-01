@@ -50,7 +50,7 @@ A vendor claims the listing to become its owner (`creator_id` moves, they can ed
 
 ## 6. Handoff
 
-You never submit. Hand you: the entry fields, the introspection output, the proof method for this listing, and the route: web `https://findagent.cloud/submit` -> **MCP server** door (introspects for you), or `findagent_create_remote_mcp`; later changes through `findagent_reintrospect_mcp`. Listings go through human review; nothing here auto-approves for a non-admin.
+You never submit. Hand the user: the entry fields, the introspection output, the proof method for this listing, and the route: web `https://findagent.cloud/submit` -> **MCP server** door (introspects for you), or `findagent_create_remote_mcp`; later changes through `findagent_reintrospect_mcp`. Listings go through human review; nothing here auto-approves for a non-admin.
 
 ## Manifest gate (run before you report)
 

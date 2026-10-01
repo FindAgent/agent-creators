@@ -2,7 +2,7 @@
 
 > Builds the ACTIONS part of a FindAgent agent — declarative API tools that call a service with the buyer's own credentials, bound to exact allowed hosts, with annotations, approval levels and guardrails — as an Agent Plugins package extension (extensions["cloud.findagent"].actions) or a findagent.json doer, no code. Use when asked to wrap an HTTP API as an agent. Not for logic that needs code (code-agent-creator) or prompt-only agents (package-agent-creator). Does NOT submit or publish; you decide when to submit.
 
-Follow this playbook as the working instructions for the task. It is plain Markdown and works in any assistant that can read files, run shell commands and browse public pages.
+Follow this playbook as the working instructions for the task. It is plain Markdown and works in any assistant that can read files and run shell commands. See "Requirements" in `AGENTS.md` for what it expects the assistant to have.
 
 # Actions agent creator
 
@@ -47,7 +47,7 @@ The public docs: https://findagent.cloud/docs/manifest (tool actions, credential
 
 ## 6. Gates (paste real output)
 
-1. Lint the manifest (`npx --yes @findagent/cli lint findagent.json`, or the package's `plugin.json` extension block) and paste the result.
+1. Lint the manifest (`npx --yes @findagent/cli@0.4.0 lint findagent.json`, or the package's `plugin.json` extension block) and paste the result.
 2. Contract test per tool: required args missing, wrong type, the URL host is inside `allowed_hosts` of the slot it names (a test that fails when an action host is not covered), no `http://`, annotations consistent with the method (a POST/PUT/PATCH/DELETE is not readOnly).
 3. Live check (not a mock of your own code): call each GET tool once against the real API with a real key the CALLER provides through an env var you never print, from a scratch script; report the real status codes, including a 401/404 path. If no key is available say "not checked: no credential" per tool; never score it as passed.
 4. Mutation-check the contract tests (break a host, a scheme, an annotation; assert the break landed and the test went red).
@@ -59,4 +59,4 @@ Never submit or publish. Report the files, schema output, live results, deferral
 
 ## Manifest gate (run before you report)
 
-Validate the manifest with the same validator the marketplace runs at submit: `npx --yes @findagent/cli lint <path-to-manifest>` (pure local, no network, no account). Paste its output verbatim; every error must be fixed at the source. Then run the live checks this file lists. Background skills: `agent-plugins-format`, `code-agent-contract`, `submit-new-agent`.
+Validate the manifest with the same validator the marketplace runs at submit: `npx --yes @findagent/cli@0.4.0 lint <path-to-manifest>` (no account or login; the first run downloads the CLI package, so it needs network once, or run it from a local clone of the CLI). Paste its output verbatim; every error must be fixed at the source. Then run the live checks this file lists. Background skills: `skills/agent-plugins-format/SKILL.md`, `skills/code-agent-contract/SKILL.md`, `skills/submit-new-agent/SKILL.md`.

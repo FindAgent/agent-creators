@@ -5,8 +5,8 @@ argument-hint: <the team's goal and the roles>
 
 # /new-department
 
-Dispatch the `department-creator` subagent for: `$ARGUMENTS`.
+Follow the `department-creator` creator for this request: $ARGUMENTS
 
 Settle first: the goal; the roles; which PUBLISHED agents fill them (an MCP server listing or a local-only code agent cannot be a member); pipeline, hub-orchestrator or p2p (p2p allows at most 8 members); whether a member must produce an artifact (`generative`) or read public web pages (`web_fetch`).
 
-Give the subagent the above, "lint the manifest with `npx --yes @findagent/cli lint`", "prove each member exists, is published and eligible", "never create the department". Create it yourself in the builder at https://findagent.cloud/departments/new.
+Hold the creator to the above: "lint the manifest with `npx --yes @findagent/cli@0.4.0 lint`", "prove each member exists, is published and eligible", "never create the department". Create it yourself in the builder at https://findagent.cloud/departments/new.

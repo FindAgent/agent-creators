@@ -20,4 +20,4 @@ description: Reference for how FindAgent stores every agent as ONE Agent Plugins
 
 Departments are not plugins (one connection over several agents) and MCP server listings are not agents (FindAgent never runs the server).
 
-Check a manifest with `npx --yes @findagent/cli lint <path>`; check a package tree by uploading it on https://findagent.cloud/submit (Upload) and reading the "We found" card. Spec: https://agent-plugins.org and https://findagent.cloud/docs/manifest.
+Check a manifest with `npx --yes @findagent/cli@0.4.0 lint <path>`; check a package tree by uploading it on https://findagent.cloud/submit (Upload) and reading the "We found" card. Spec: https://agent-plugins.org and https://findagent.cloud/docs/manifest.

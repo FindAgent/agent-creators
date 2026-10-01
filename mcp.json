@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "findagent": {
+      "type": "http",
+      "url": "https://mcp.findagent.cloud/mcp"
+    }
+  }
+}

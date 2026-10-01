@@ -5,8 +5,8 @@ argument-hint: <what the agent does> [node|python]
 
 # /new-code-agent
 
-Dispatch the `code-agent-creator` subagent for: `$ARGUMENTS`.
+Follow the `code-agent-creator` creator for this request: $ARGUMENTS
 
 Settle first, deciding from the code or docs rather than guessing: the agent's single job; Node or Python (Python for data and parsing work, Node otherwise); the hosts it will call (they become `allowed_hosts`); whether it needs a buyer credential (declare a slot, never a value).
 
-Give the subagent: the job, the runtime, the hosts, "start from https://github.com/FindAgent/agent-template", "lint with `npx --yes @findagent/cli lint findagent.json` and paste the output", "never submit or publish". When it returns, lint again yourself, then submit at https://findagent.cloud/submit (GitHub door) when you are ready.
+Hold the creator to: the job, the runtime, the hosts, "start from https://github.com/FindAgent/agent-template", "lint with `npx --yes @findagent/cli@0.4.0 lint findagent.json` and paste the output", "never submit or publish". When the work is done, lint again yourself, then submit at https://findagent.cloud/submit (GitHub door) when you are ready.

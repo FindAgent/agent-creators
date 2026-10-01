@@ -62,9 +62,9 @@ Rules the platform enforces (each one measured, not guessed):
 ## 5. Handoff
 
 - Never submit or publish. Report: repo, sha, file tree, the validator output, the normalizer output, every deferral or doubt.
-- Tell you how to submit: web `https://findagent.cloud/submit` (Upload a zip/folder, or the GitHub door), or the MCP tools `findagent_create_package_draft` (files as text) then `findagent_submit_for_review`; a new version of a live agent goes through `findagent_reupload`. The creator attests the files are their own; the package is scanned and a human reviews it. A platform admin's own submission auto-approves on a clean scan; everyone else waits for human review.
+- Tell the user how to submit: web `https://findagent.cloud/submit` (Upload a zip/folder, or the GitHub door), or the MCP tools `findagent_create_package_draft` (files as text) then `findagent_submit_for_review`; a new version of a live agent goes through `findagent_reupload`. The creator attests the files are their own; the package is scanned and a human reviews it. A platform admin's own submission auto-approves on a clean scan; everyone else waits for human review.
 - Commit under your own identity.
 
 ## Manifest gate (run before you report)
 
-Validate the manifest with the same validator the marketplace runs at submit: `npx --yes @findagent/cli lint <path-to-manifest>` (pure local, no network, no account). Paste its output verbatim; every error must be fixed at the source. Then run the live checks this file lists. Background skills: `agent-plugins-format`, `code-agent-contract`, `submit-new-agent`.
+Validate the manifest with the same validator the marketplace runs at submit: `npx --yes @findagent/cli@0.4.0 lint <path-to-manifest>` (no account or login; the first run downloads the CLI package, so it needs network once, or run it from a local clone of the CLI). Paste its output verbatim; every error must be fixed at the source. Then run the live checks this file lists. Background skills: `agent-plugins-format`, `code-agent-contract`, `submit-new-agent`.

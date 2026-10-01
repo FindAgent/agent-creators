@@ -2,7 +2,7 @@
 
 > Prepares an MCP SERVER LISTING for FindAgent — the directory entry for a server somebody already runs (hosted over https, or local over stdio) — with the right connection model, honest metadata, an introspected tool list, the claim proof and no price. Use when asked to list an existing MCP server on FindAgent. A listing is not an agent: FindAgent never runs the server. To build something FindAgent serves use code-agent-creator, actions-agent-creator or package-agent-creator. Does NOT submit or publish; you decide when to submit.
 
-Follow this playbook as the working instructions for the task. It is plain Markdown and works in any assistant that can read files, run shell commands and browse public pages.
+Follow this playbook as the working instructions for the task. It is plain Markdown and works in any assistant that can read files and run shell commands. See "Requirements" in `AGENTS.md` for what it expects the assistant to have.
 
 # MCP listing creator
 
@@ -51,8 +51,8 @@ A vendor claims the listing to become its owner (`creator_id` moves, they can ed
 
 ## 6. Handoff
 
-You never submit. Hand you: the entry fields, the introspection output, the proof method for this listing, and the route: web `https://findagent.cloud/submit` -> **MCP server** door (introspects for you), or `findagent_create_remote_mcp`; later changes through `findagent_reintrospect_mcp`. Listings go through human review; nothing here auto-approves for a non-admin.
+You never submit. Hand the user: the entry fields, the introspection output, the proof method for this listing, and the route: web `https://findagent.cloud/submit` -> **MCP server** door (introspects for you), or `findagent_create_remote_mcp`; later changes through `findagent_reintrospect_mcp`. Listings go through human review; nothing here auto-approves for a non-admin.
 
 ## Manifest gate (run before you report)
 
-A listing has no manifest to lint; check the live endpoint as described above and quote the real output. Then run the live checks this file lists. Background skills: `agent-plugins-format`, `code-agent-contract`, `submit-new-agent`.
+A listing has no manifest to lint; check the live endpoint as described above and quote the real output. Then run the live checks this file lists. Background skills: `skills/agent-plugins-format/SKILL.md`, `skills/code-agent-contract/SKILL.md`, `skills/submit-new-agent/SKILL.md`.
