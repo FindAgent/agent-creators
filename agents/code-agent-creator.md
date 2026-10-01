@@ -19,7 +19,7 @@ Choose the lightest kind that is honest. A wrapper around one HTTP API is a doer
 
 ## 1. Read first (public docs)
 
-The public docs: https://findagent.cloud/docs/code-agents (build + sandbox), https://findagent.cloud/docs/manifest (the manifest), https://findagent.cloud/docs/creator-guide, https://findagent.cloud/docs/security, and the reference template https://github.com/FindAgent/agent-template (the six entry tools, `findagent.json`, the display-only panel, in Node and in Python). Start from that template: copy it, rename it, change the tools. Work in a scratch directory.
+The public docs: https://findagent.cloud/docs/code-agents (build + sandbox), https://findagent.cloud/docs/manifest (the manifest), https://findagent.cloud/docs/creator-guide, https://findagent.cloud/docs/security, and the reference template https://github.com/FindAgent/agent-template (the six entry tools, `findagent.json`, the display-only panel, in Node and in Python). Start from that template with its scaffold script, never by hand: `python scripts/init_agent.py <node|python> <new-repo-dir> --name "<Agent Name>"` (run inside a clone of the template). It copies the variant and adds EVERYTHING a complete agent repo carries: `findagent.json`, a DXT `manifest.json`, the assistant entry files (`AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `CONVENTIONS.md`, `.aider.conf.yml`, Copilot and Cursor rules), the MCP client configs (`mcp.json`, `.mcp.json`, `.cursor/mcp.json`, `.vscode/mcp.json`, generated from `findagent.json`), `SECURITY.md`, `CHANGELOG.md`, `LICENSE`, `.gitignore`, `.gitattributes` and the CI workflow. For a repo that already exists, `python scripts/init_agent.py --fill <repo>` adds only what is missing. Then change the tools. Work in a scratch directory.
 
 ## 2. The platform contract (every code-bundle)
 
@@ -53,6 +53,10 @@ The public docs: https://findagent.cloud/docs/code-agents (build + sandbox), htt
 - Create the repo in your own GitHub account or organization (private while you build, MIT, default branch `main`) and commit under your own identity.
 - **Never submit or publish.** Do not call FindAgent submit tools. Report the repo URL and sha; the user submits through the platform (web `/submit` or the MCP create / submit tools). An admin's self-submission auto-approves on a clean scan, which is a live listing, so that step is the user's.
 - Report concisely: repo, sha, file summary, the real output of every gate, the live runs, `findagent.json`, the panel screenshots, and every deferral or doubt — a skipped or failing step is stated plainly.
+
+## Completeness gate (run before you report)
+
+`python scripts/check_repo_files.py <repo>` (from the template clone) must print `OK`: every file in `scripts/repo-files.json` is present, every JSON file parses, nothing required is hidden by `.gitignore`, and the `findagent.json` entrypoint exists. After editing `mcp` in `findagent.json`, regenerate the MCP configs (`python scripts/sync_mcp_configs.py` in the template; in your repo copy the same script or edit the four files together).
 
 ## Manifest gate (run before you report)
 

@@ -13,3 +13,4 @@ description: Checklist of the platform contract every FindAgent CODE agent must 
 6. **Panel**: display-only or answers with `ui/message`; it never calls tools. No `ui.domain`, closed CSP, light and dark, usable at 390px.
 
 Traps seen on real submissions: categories auto-detected from loose words (put the discipline in `tags`); `skills[]` missing so the agent served no tools; the first Validate saying "ready" before any build ran; a discarded draft keeping its slug. Lint with `npx --yes @findagent/cli@0.4.0 lint findagent.json`, then run the live stdio test. Start from https://github.com/FindAgent/agent-template.
+7. **A complete repo.** `findagent.json` plus a DXT `manifest.json`, `README.md`, `LICENSE`, `SECURITY.md`, `CHANGELOG.md`, the assistant entry files, the four MCP client configs, a CI workflow and tests. The template's `scripts/init_agent.py` creates the set and `scripts/check_repo_files.py` verifies it; the list is `scripts/repo-files.json`.
