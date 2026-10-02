@@ -19,7 +19,7 @@ The public docs: https://findagent.cloud/docs/manifest (tool actions, credential
 ## 2. Two equivalent homes (pick one, same content)
 
 - **Agent Plugins package** (preferred, matches the platform's one package model): `plugin.json` with `extensions["cloud.findagent"].actions = { "tools": [...], "credential_slots": [...] }`. Every tool carries an `action`. `tools` 1-40, names unique.
-- **findagent.json v1.1** `kind: "mcp-tool"` with `tools[]` + `credential_slots[]`. Same tool and slot schemas.
+- **findagent.json v1.1** `kind: "mcp-tool"` with `tools[]` + `credential_slots[]`. Same tool and slot schemas. Declare the actions in ONE place: the declared manifest is the first of `findagent.json`, `.findagent/manifest.json`, `.findagent/findagent.json`, `.findagent.json` that exists, and a package that declares actions both there and in `plugin.json` is refused (`declared_manifest_shadowed`).
 
 ## 3. A tool
 
@@ -27,7 +27,7 @@ The public docs: https://findagent.cloud/docs/manifest (tool actions, credential
 - `input_schema`: a real typed JSON Schema (types, required, enums, descriptions). An open schema is a footgun: the client gets no signal an argument is an array or object.
 - `action.type: "http"`: `method` GET/POST/PUT/PATCH/DELETE; `url` must be `https://` (a `{param}` token is allowed for path/query values and `{install_host}` for a buyer-owned host); optional `headers` and `body_template`; `auth_ref` names a credential slot. **Plain http, ftp and gibberish URLs fail at parse.**
 - `action.type: "prompt-template"`: a `template` the runtime fills; use it for pure instruction tools.
-- `annotations`: set the truth (readOnly, destructive, idempotent, openWorld). A source `readOnlyHint: true` on a mutating action is OVERRIDDEN. A **destructive** tool automatically gets an `approval: "human"` floor (the client asks "Approve this action?"; declined or unaskable = refused). Use `human_strict` for irreversible or high-value actions: it blocks when the client cannot ask.
+- `annotations`: set the truth (readOnly, destructive, idempotent, openWorld). A source `readOnlyHint: true` on a mutating action is OVERRIDDEN. A **destructive** tool automatically gets an `approval: "human"` floor. `human` asks "Approve this action?" where the client can be asked (a declined answer is a refusal); where it cannot be asked (the stateless hosted gateway), the tool answers with a re-run-with-`__confirm` notice instead of running, which is friction and visibility, not proof of a human. Use `human_strict` for irreversible or high-value actions: it asks where it can and is REFUSED where it cannot. `external` is for an organisation approver and is refused outside an organisation agent.
 - `requires[]` can force tool order (a gated tool refuses unless the named tools ran first, same user, 30 minutes).
 
 ## 4. Credential slots (declarations, never values)
@@ -47,7 +47,7 @@ The public docs: https://findagent.cloud/docs/manifest (tool actions, credential
 
 ## 6. Gates (paste real output)
 
-1. Lint the manifest (`npx --yes @findagent/cli@0.4.0 lint findagent.json`, or the package's `plugin.json` extension block) and paste the result.
+1. Lint the manifest (`npx --yes @findagent/cli@0.4.0 lint findagent.json` for a doer). The CLI cannot lint a package's `plugin.json`: for a package, upload the folder on https://findagent.cloud/submit (Upload door) and read the "We found" card, which runs the same action and credential checks. Paste the result.
 2. Contract test per tool: required args missing, wrong type, the URL host is inside `allowed_hosts` of the slot it names (a test that fails when an action host is not covered), no `http://`, annotations consistent with the method (a POST/PUT/PATCH/DELETE is not readOnly).
 3. Live check (not a mock of your own code): call each GET tool once against the real API with a real key the CALLER provides through an env var you never print, from a scratch script; report the real status codes, including a 401/404 path. If no key is available say "not checked: no credential" per tool; never score it as passed.
 4. Mutation-check the contract tests (break a host, a scheme, an annotation; assert the break landed and the test went red).
