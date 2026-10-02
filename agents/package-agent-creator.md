@@ -37,8 +37,8 @@ mcp.json                    the gateway address FindAgent writes; do not hand-au
 Rules the platform enforces (each one measured, not guessed):
 
 - **plugin.json**: `"$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json"`, `name` matches `^[a-z0-9](?:[a-z0-9.-]{0,62}[a-z0-9])?$` (refused, never rewritten), a real description, a version.
-- **SKILL.md frontmatter**: `name` is 1-64 chars of lowercase letters, digits and single hyphens and MUST equal the folder id; `description` is required, at most 1024 chars, written as *when to use this skill*. A bad `name` is refused; the rest are warnings.
-- **At most 40 skills.** More is refused, never silently cut.
+- **SKILL.md frontmatter**: `name` is 1-64 chars of lowercase letters, digits and single hyphens and should equal the folder id; `description` is required, at most 1024 chars, written as *when to use this skill*. A `name` that breaks the rule is refused (`invalid_skill_name`); a missing name or description, an over-long description and a name that differs from the folder id import with a warning, and the Skills extension leaves out all of those skills except the one with the over-long description.
+- **At most 40 skills.** More is refused (`too_many_skills`), never silently cut. The stored package is at most 8 MB; over MCP the text door takes 4 MB in total, 2 MB per file and 4000 files.
 - **Text only.** A binary file is left out and reported. A non-root skill folder is kept whole.
 - **No machine-side parts unless you mean Install.** A `hooks/` file, anything under `scripts/` or `bin/`, an executable extension, a launcher with a `command`, shell-expansion syntax (the bang-backtick and bang-brace forms) in a command body, or `allowed-tools` / `tools` granting `Bash` makes that part run on the buyer's machine. It is **Install-only**, off the Connect path, and needs the buyer's explicit consent. Keep the Connect path clean by default; add machine-side parts only when the agent truly needs them, and say so in the README.
 - **Secrets**: never a key, token or password anywhere in the tree, including examples; the file scan reads every file and a hit blocks the submit.
@@ -62,7 +62,7 @@ Rules the platform enforces (each one measured, not guessed):
 ## 5. Handoff
 
 - Never submit or publish. Report: repo, sha, file tree, the validator output, the normalizer output, every deferral or doubt.
-- Tell the user how to submit: web `https://findagent.cloud/submit` (Upload a zip/folder, or the GitHub door), or the MCP tools `findagent_create_package_draft` (files as text) then `findagent_submit_for_review`; a new version of a live agent goes through `findagent_reupload`. The creator attests the files are their own; the package is scanned and a human reviews it. A platform admin's own submission auto-approves on a clean scan; everyone else waits for human review.
+- Tell the user how to submit: web `https://findagent.cloud/submit` (Upload a zip/folder, or the GitHub door), or the MCP tools `findagent_create_package_draft` (files as text) then `findagent_submit_for_review`; a new version of a live agent goes through `findagent_new_version` (it routes on the agent's kind) or, for an uploaded package, `findagent_reupload`; an agent imported from GitHub is re-pulled and `findagent_reupload` refuses it (`github_source`). The creator attests the files are their own; the package is scanned and a human reviews it. A platform admin's own submission auto-approves on a clean scan; everyone else waits for human review.
 - Commit under your own identity.
 
 ## Manifest gate (run before you report)

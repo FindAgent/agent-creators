@@ -12,7 +12,7 @@ Every FindAgent agent is one package made of four parts: **Instructions**, **Ski
 | `department-creator` | A **Department**: a team of published agents with a topology, workflow or orchestrator | `/new-department` |
 | `mcp-listing-creator` | An **MCP server listing** for a server somebody already runs | `/new-mcp-listing` |
 
-Plus `/check-agent` (or `node scripts/check-agent.mjs`, which lints a manifest with `npx @findagent/cli lint`) and three skills the creators share: `agent-plugins-format`, `code-agent-contract`, `submit-new-agent`.
+Plus `/check-agent` (or `node scripts/check-agent.mjs`, which lints a `findagent.json` or a department manifest with `npx @findagent/cli lint`; a package's `plugin.json` is checked by uploading the folder on the submit page and reading the "We found" card) and three skills the creators share: `agent-plugins-format`, `code-agent-contract`, `submit-new-agent`.
 
 ## Use it with any assistant
 
@@ -42,6 +42,14 @@ node scripts/build-adapters.mjs --check                 # CI: fail when they are
 ```
 
 `agents/` and `commands/` are the source; `playbooks/`, `AGENTS.md`, `GEMINI.md`, `CONVENTIONS.md`, `.github/copilot-instructions.md` and `.cursor/rules/` are generated from them.
+
+## Which assistants this was checked with
+
+The playbooks are plain Markdown, so any assistant that can read files and run commands can follow them. The adapters
+(`CLAUDE.md`, `GEMINI.md`, `CONVENTIONS.md`, `.github/copilot-instructions.md`, `.cursor/rules/`, `.aider.conf.yml`) are
+generated and CI checks they are current. The scripts were run here on Windows with Node 25; CI is configured for Node 22. The
+playbooks were exercised end to end with Claude Code only; Codex, Cursor, Gemini CLI, GitHub Copilot and Aider read the
+same files but no run with them is recorded here.
 
 ## What they will not do
 
