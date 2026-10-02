@@ -16,7 +16,7 @@ This repository teaches an AI assistant to build a [FindAgent](https://findagent
 
 ## Commands
 
-- `playbooks/commands/check-agent.md`: Lint an agent manifest (findagent.json or a department manifest; not a package's plugin.json) with the same validator the FindAgent marketplace runs at submit. Local, read-only.
+- `playbooks/commands/check-agent.md`: Check a local agent repository (code agent, skills or plugin package, actions agent or department manifest) the way FindAgent reads it, before you submit. Local, read-only.
 - `playbooks/commands/new-actions-agent.md`: Build a new ACTIONS agent (declarative HTTP tools that use the buyer's own credentials, exact allowed hosts, guardrails) with the actions-agent-creator playbook. Never submits.
 - `playbooks/commands/new-code-agent.md`: Build a new CODE agent (a Node or Python MCP server with the six FindAgent entry tools, findagent.json and an optional display-only panel) with the code-agent-creator playbook. Never submits.
 - `playbooks/commands/new-department.md`: Design a new Department (a team of published agents: pipeline, hub-orchestrator or p2p, or a workflow or orchestrator) as a findagent/department/v1 manifest with the department-creator playbook. Never creates it.

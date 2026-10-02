@@ -5,6 +5,8 @@ description: Reference for how FindAgent stores every agent as ONE Agent Plugins
 
 # Agent Plugins 1.0 on FindAgent
 
+## What an agent is made of
+
 **An Agent is one package with four parts:** Instructions, Skills, Actions, Code. Two ways to use it: **Connect** (add the gateway address in any MCP client; everything runs on FindAgent) and **Install** (a plugin from the catalog, only for apps that install plugins).
 
 | Path | Part | Notes |
@@ -20,4 +22,6 @@ description: Reference for how FindAgent stores every agent as ONE Agent Plugins
 
 Departments are not plugins (one connection over several agents) and MCP server listings are not agents (FindAgent never runs the server).
 
-Check a manifest with `npx --yes @findagent/cli@0.4.0 lint <path>`; check a package tree by uploading it on https://findagent.cloud/submit (Upload) and reading the "We found" card. Spec: https://agent-plugins.org and https://findagent.cloud/docs/manifest.
+## Checking
+
+Check a package tree or any agent repository with `npx --yes @findagent/cli@0.4.1 check <dir>` (offline, whole repo); lint one manifest or a package's `plugin.json` with `npx --yes @findagent/cli@0.4.1 lint <path>`. Spec: https://agent-plugins.org and https://findagent.cloud/docs/manifest.

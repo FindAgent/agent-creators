@@ -59,7 +59,7 @@ Decisions, with the platform's reasons:
 
 ## 5. Gates (paste real output)
 
-1. Build the manifest and lint it with `npx --yes @findagent/cli@0.4.0 lint <department-manifest>`. Paste the result, including the per-topology member cap (p2p 8, others 16).
+1. Build the manifest and lint it with `npx --yes @findagent/cli@0.4.1 lint <department-manifest>`. Paste the result, including the per-topology member cap (p2p 8, others 16).
 2. Prove each member exists, is published and is eligible (section 2) by reading the catalogue (`findagent_get_agent` / the database read your tools allow). A member that is a listing, a local-only code agent or unpublished fails the design.
 3. Check role overlap: list each member's tools and say which goal step each serves; a member with no step is removed.
 4. For `workflow` / `orchestrator`, show the path a sample goal takes member by member and which `when` conditions fire.
@@ -70,4 +70,4 @@ You never create the department. Hand the user: the manifest JSON, the validatio
 
 ## Manifest gate (run before you report)
 
-Validate the manifest with the same validator the marketplace runs at submit: `npx --yes @findagent/cli@0.4.0 lint <path-to-manifest>` (no account or login; the first run downloads the CLI package, so it needs network once, or run it from a local clone of the CLI). Paste its output verbatim; every error must be fixed at the source. Then run the live checks this file lists. Background skills: `agent-plugins-format`, `code-agent-contract`, `submit-new-agent`.
+Check the whole repository first with the platform's own offline check: `npx --yes @findagent/cli@0.4.1 check <repo-dir>` (manifest schema, the six entry tools, example prompts, egress hosts, lockfile, package parts, actions and secret shapes; no account or login, read-only; the first run downloads the CLI package, so it needs network once). Then validate a lone manifest or a package's `plugin.json` with `npx --yes @findagent/cli@0.4.1 lint <path>`. Paste both outputs verbatim; every FAIL must be fixed at the source and every WARN explained. Then run the live checks this file lists. Background skills: `agent-plugins-format`, `code-agent-contract`, `submit-new-agent`.

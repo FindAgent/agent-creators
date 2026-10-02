@@ -1,31 +1,23 @@
 #!/usr/bin/env node
-// Lint a FindAgent manifest locally with the marketplace's own validator.
-//   node scripts/check-agent.mjs <path to findagent.json | department manifest>
-// Read-only: no account, nothing submitted. Exit code 1 on any error.
-// A package's plugin.json is NOT validated by the CLI (it would be read as an agent manifest and fail on
-// fields it never carries): upload the folder on https://findagent.cloud/submit and read the "We found" card.
+// Check a FindAgent agent locally with the marketplace's own CLI, offline apart from the first download.
+//   node scripts/check-agent.mjs <repository folder>            whole-repo check (`findagent check`)
+//   node scripts/check-agent.mjs <findagent.json | plugin.json>  one manifest (`findagent lint`)
+// Read-only: no account, nothing submitted. Exit code 1 on any failure.
 
-import { existsSync } from 'node:fs'
+import { existsSync, statSync } from 'node:fs'
 import { spawnSync } from 'node:child_process'
 
 const target = process.argv[2]
 
 if (!target || !existsSync(target)) {
-  console.error('usage: node scripts/check-agent.mjs <path to the manifest>')
+  console.error('usage: node scripts/check-agent.mjs <repository folder | path to a manifest>')
   process.exit(2)
 }
 
-if (/(^|[\\/])plugin\.json$/.test(target)) {
-  console.error(
-    'plugin.json is an Agent Plugins manifest, not a FindAgent agent manifest: the CLI lint cannot check it.\n' +
-      'Upload the package folder on https://findagent.cloud/submit (Upload door) and read the "We found" card.'
-  )
-  process.exit(2)
-}
-
-// Pinned so a lint result is reproducible; bump together with the playbooks.
-const CLI = '@findagent/cli@0.4.0'
+// Pinned so a result is reproducible; bump together with the playbooks.
+const CLI = '@findagent/cli@0.4.1'
+const verb = statSync(target).isDirectory() ? 'check' : 'lint'
 const npx = process.platform === 'win32' ? 'npx.cmd' : 'npx'
-const run = spawnSync(npx, ['--yes', CLI, 'lint', target], { stdio: 'inherit', shell: process.platform === 'win32' })
+const run = spawnSync(npx, ['--yes', CLI, verb, target], { stdio: 'inherit', shell: process.platform === 'win32' })
 
 process.exit(run.status ?? 1)
