@@ -46,7 +46,7 @@ The public docs: https://findagent.cloud/docs/manifest (tool actions, credential
 
 ## 6. Gates (paste real output)
 
-1. Lint the manifest (`npx --yes @findagent/cli@0.4.0 lint findagent.json` for a doer). The CLI cannot lint a package's `plugin.json`: for a package, upload the folder on https://findagent.cloud/submit (Upload door) and read the "We found" card, which runs the same action and credential checks. Paste the result.
+1. Run `npx --yes @findagent/cli@0.4.1 check <repo-dir>` (the platform's whole-repo check, offline: it runs the same action and credential checks on a package's `plugin.json` or a doer's `findagent.json`), and lint a lone manifest or `plugin.json` with `npx --yes @findagent/cli@0.4.1 lint <path>`. Paste the result.
 2. Contract test per tool: required args missing, wrong type, the URL host is inside `allowed_hosts` of the slot it names (a test that fails when an action host is not covered), no `http://`, annotations consistent with the method (a POST/PUT/PATCH/DELETE is not readOnly).
 3. Live check (not a mock of your own code): call each GET tool once against the real API with a real key the CALLER provides through an env var you never print, from a scratch script; report the real status codes, including a 401/404 path. If no key is available say "not checked: no credential" per tool; never score it as passed.
 4. Mutation-check the contract tests (break a host, a scheme, an annotation; assert the break landed and the test went red).
@@ -58,4 +58,4 @@ Never submit or publish. Report the files, schema output, live results, deferral
 
 ## Manifest gate (run before you report)
 
-Validate the manifest with the same validator the marketplace runs at submit: `npx --yes @findagent/cli@0.4.0 lint <path-to-manifest>` (no account or login; the first run downloads the CLI package, so it needs network once, or run it from a local clone of the CLI). Paste its output verbatim; every error must be fixed at the source. Then run the live checks this file lists. Background skills: `agent-plugins-format`, `code-agent-contract`, `submit-new-agent`.
+Check the whole repository first with the platform's own offline check: `npx --yes @findagent/cli@0.4.1 check <repo-dir>` (manifest schema, the six entry tools, example prompts, egress hosts, lockfile, package parts, actions and secret shapes; no account or login, read-only; the first run downloads the CLI package, so it needs network once). Then validate a lone manifest or a package's `plugin.json` with `npx --yes @findagent/cli@0.4.1 lint <path>`. Paste both outputs verbatim; every FAIL must be fixed at the source and every WARN explained. Then run the live checks this file lists. Background skills: `agent-plugins-format`, `code-agent-contract`, `submit-new-agent`.
