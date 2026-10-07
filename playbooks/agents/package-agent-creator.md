@@ -32,7 +32,7 @@ skills/<id>/references/...  text files the SKILL.md links to by relative path (k
 skills/instructions/SKILL.md  the reserved skill that carries the agent's Instructions (system-prompt-level behaviour)
 commands/<name>.md          ready-made commands (served in Connect as a prompt `command-<name>`)
 agents/<name>.md            sub-agents (served as a prompt `agent-<name>`)
-mcp.json                    the gateway address FindAgent writes; do not hand-author a launcher
+mcp.json                    the gateway address, written by FindAgent in the Agent Plugins form ($schema + mcpServers); do not hand-author a launcher
 ```
 
 Rules the platform enforces (each one measured, not guessed):

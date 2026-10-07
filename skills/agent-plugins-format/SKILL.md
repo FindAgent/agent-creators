@@ -18,7 +18,7 @@ description: Reference for how FindAgent stores every agent as ONE Agent Plugins
 | `findagent.json` (v1.2, `kind: code-bundle`) | Code | entrypoint, runtime, `allowed_hosts`, `skills[]`, `example_prompts[]` |
 | `commands/*.md`, `agents/*.md` | commands, sub-agents | served in Connect as prompts `command-<name>` / `agent-<name>` |
 | `hooks/`, `scripts/`, `bin/`, a launcher `mcp.json` with a `command`, shell forms, `allowed-tools: Bash` | machine-side | **Install only**, off Connect, buyer consent; never the default |
-| `mcp.json` | gateway address | written by FindAgent |
+| `mcp.json` | gateway address | written by FindAgent in the Agent Plugins form (`$schema` + `mcpServers`, `type: "streamable-http"`); Claude Code's own `.mcp.json` (`type: "http"`) is written beside it. Never hand-author either |
 
 Departments are not plugins (one connection over several agents) and MCP server listings are not agents (FindAgent never runs the server).
 
