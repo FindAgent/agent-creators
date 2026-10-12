@@ -68,9 +68,11 @@ Some rule files are read as skills; others are not. Move standing instructions i
 
 | File | What the importer does |
 |---|---|
-| root `AGENTS.md`, `.cursorrules`, `.windsurfrules` | Each becomes one skill (counts toward the 40). |
-| `.cursor/rules/*.mdc` and `*.md`, `.windsurf/rules/*.md`, `.continue/rules/*.md` | One skill per file (counts toward the 40). |
-| `CLAUDE.md`, `.clinerules`, `copilot-instructions.md`, `CONVENTIONS.md`, a root `GEMINI.md` | Not recognised as a part of the package. They are developer-tool files for people working on the repo, not content for the buyer's assistant. Exception: in a Gemini extension the declared context file is kept. |
+| root `AGENTS.md`, `.cursorrules`, `.windsurfrules`, `.clinerules` (as a file) | Each becomes one skill (counts toward the 40). |
+| `.cursor/rules/*.mdc` and `*.md`, `.windsurf/rules/*.md`, `.continue/rules/*.md`, `.clinerules/*.md`, GitHub Copilot's path-scoped `*.instructions.md` files | One skill per file (counts toward the 40). |
+| `CLAUDE.md`, `GEMINI.md`, `CONVENTIONS.md`, `.github/copilot-instructions.md`, and any of these names inside a subfolder | Not recognised as a part of the package. They are developer-tool files for people working on the repo (the agent template writes the first four into every repository), not content for the buyer's assistant. Exception: in a Gemini extension the declared context file is kept. |
+
+A root `AGENTS.md` IS read as a skill, so write it for the buyer's model or delete it from the copy you submit.
 
 A file that becomes a skill is not held to the Agent Skills naming rules, but its text still reaches the buyer's model, so write it for that reader and read it once for contradictions with `skills/instructions/SKILL.md`.
 
@@ -113,7 +115,7 @@ FindAgent accepts only the OWNER's own repository: you attest the files are your
 ## 5. Handoff
 
 - Never submit or publish. Report: repo, sha, file tree, the validator output, the normalizer output, every deferral or doubt.
-- Tell the user how to submit: web `https://findagent.cloud/submit` (Upload a zip/folder, or the GitHub door), or the MCP tools `findagent_create_package_draft` (files as text) then `findagent_submit_for_review`; a new version of a live agent goes through `findagent_new_version` (it routes on the agent's kind) or, for an uploaded package, `findagent_reupload`; an agent imported from GitHub is re-pulled and `findagent_reupload` refuses it (`github_source`). The creator attests the files are their own; the package is scanned and a human reviews it. A platform admin's own submission auto-approves on a clean scan; everyone else waits for human review.
+- Tell the user how to submit: web `https://findagent.cloud/submit` (Upload a zip/folder, or the GitHub door), or the MCP tools `findagent_create_package_draft` (files as text, or `repo` + optional `ref` and `path` for a repository you own; `path` is the folder of a monorepo that holds this one package) then `findagent_submit_for_review`; a new version of a live agent goes through `findagent_new_version` (it routes on the agent's kind) or, for an uploaded package, `findagent_reupload`; an agent imported from GitHub is re-pulled and `findagent_reupload` refuses it (`github_source`). The creator attests the files are their own; the package is scanned and a human reviews it. A platform admin's own submission auto-approves on a clean scan; everyone else waits for human review.
 - Commit under your own identity.
 
 ## Manifest gate (run before you report)

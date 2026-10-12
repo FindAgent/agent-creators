@@ -46,7 +46,8 @@ A repository can fall in two rows (for example skills plus an API). Pick the lig
 | **Kept** | Text of `plugin.json` (or the vendor plugin manifest), every `SKILL.md` and its text siblings, `commands/`, `agents/`, recognised rule files, the vendor block of the plugin format |
 | **Left out, and reported** | Binary files (fonts, PDFs, images, executables). The import says which |
 | **Stored but reaching no buyer today** | `hooks/`, `scripts/`, `bin/`, launchers with a `command`, shell expansion in commands, `allowed-tools` granting `Bash`. They are scanned, off the Connect path, and the public plugin catalog exports every agent without them. Do not rely on them |
-| **Not recognised as parts** | `CLAUDE.md`, `.clinerules`, `copilot-instructions.md`, `CONVENTIONS.md`, a root `GEMINI.md` outside a Gemini extension |
+| **Read as a skill (root only)** | `AGENTS.md`, `.clinerules` and `.clinerules/*.md`, GitHub Copilot's path-scoped `*.instructions.md` files; they describe how to work IN a repo, so check each reads right for the buyer's model |
+| **Not recognised as parts** | `CLAUDE.md`, `GEMINI.md`, `CONVENTIONS.md`, `.github/copilot-instructions.md` (the agent template writes them into every repository), and rule file names inside a subfolder |
 | **Refused** | More than 40 skills (`too_many_skills`); an invalid skill `name` (`invalid_skill_name`); an unreadable manifest; more than 40 tools; an action on a plain `http://` URL; actions declared in both `findagent.json` and `plugin.json`; a secret anywhere in the tree |
 
 ## 4. What you produce

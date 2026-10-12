@@ -34,7 +34,7 @@ Departments are not plugins (one connection over several agents) and MCP server 
 | FindAgent manifest | `findagent.json` (also `.findagent/manifest.json`, `.findagent/findagent.json`, `.findagent.json`) |
 | Bare skills tree | no manifest: any `SKILL.md` outside dependency and build folders is a skill |
 
-Rule files: root `AGENTS.md`, `.cursorrules`, `.windsurfrules`, `.cursor/rules/*`, `.windsurf/rules/*` and `.continue/rules/*` each become a skill (they count toward the 40). `CLAUDE.md`, `.clinerules`, `copilot-instructions.md` and `CONVENTIONS.md` are not package parts; put standing instructions in `skills/instructions/SKILL.md`.
+Rule files: root `AGENTS.md`, `.cursorrules`, `.windsurfrules`, `.clinerules`, and the files in `.cursor/rules/`, `.windsurf/rules/`, `.continue/rules/`, `.clinerules/` and GitHub Copilot's `*.instructions.md` folder each become a skill (they count toward the 40). Only the root counts, not a subfolder. `CLAUDE.md`, `GEMINI.md`, `CONVENTIONS.md` and `copilot-instructions.md` are not package parts. A plugin made only of commands or sub-agents (no skill) is accepted when at least one is served as a prompt. Put standing instructions in `skills/instructions/SKILL.md`.
 
 ## What reaches a buyer today
 

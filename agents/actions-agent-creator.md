@@ -22,7 +22,7 @@ The public docs: https://findagent.cloud/docs/manifest (tool actions, credential
 
 ## 2a. Starting from an OpenAPI spec
 
-The web import accepts an OpenAPI 3.x spec (JSON or YAML) with source `openapi` and maps each operation (GET, POST, PUT, PATCH, DELETE) to a tool. It needs an `https://` server URL. It stops at 40 operations and says so in a warning ("only the first 40 were imported"), and the first 40 in document order are rarely the right 40. So select the operations before you import: keep the ones a model needs (read and search first), drop the admin and bulk ones, and write the trimmed spec yourself, or build the tool list by hand in the shape of section 3. Then read each imported tool: a generated description is a starting point, and the annotations (read-only, destructive) still need your judgement.
+The web import accepts an OpenAPI 3.x spec (JSON or YAML) with source `openapi`, and an MCP client has the same mapper as the read-only tool `findagent_import_openapi` (it saves nothing; pass its `tools`, `credential_slots` and `guardrails` to `findagent_create_draft`) and maps each operation (GET, POST, PUT, PATCH, DELETE) to a tool. It needs an `https://` server URL. It stops at 40 operations and says so in a warning ("only the first 40 were imported"), and the first 40 in document order are rarely the right 40. So select the operations before you import: keep the ones a model needs (read and search first), drop the admin and bulk ones, and write the trimmed spec yourself, or build the tool list by hand in the shape of section 3. Then read each imported tool: a generated description is a starting point, and the annotations (read-only, destructive) still need your judgement.
 
 ## 3. A tool
 
