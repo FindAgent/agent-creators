@@ -11,6 +11,7 @@ Every FindAgent agent is one package made of four parts: **Instructions**, **Ski
 | `actions-agent-creator` | **Actions**: declarative HTTP tools that use the buyer's own credentials, bound to exact hosts | `/new-actions-agent` |
 | `department-creator` | A **Department**: a team of published agents with a topology, workflow or orchestrator | `/new-department` |
 | `mcp-listing-creator` | An **MCP server listing** for a server somebody already runs | `/new-mcp-listing` |
+| `port-agent-creator` | A **port plan** for an existing repository (skills collection, vendor plugin, rules repo, OpenAPI wrapper, MCP server, framework agent): which creator takes it, and what is kept, left out or refused | `/port-agent` |
 
 Plus `/check-agent` (or `node scripts/check-agent.mjs`, which lints a `findagent.json` or a department manifest with `npx @findagent/cli lint`; a package's `plugin.json` is checked by uploading the folder on the submit page and reading the "We found" card) and three skills the creators share: `agent-plugins-format`, `code-agent-contract`, `submit-new-agent`.
 

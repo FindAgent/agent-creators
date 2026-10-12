@@ -13,6 +13,7 @@ This repository teaches an AI assistant to build a [FindAgent](https://findagent
 | Designs a FindAgent Department | `playbooks/agents/department-creator.md` |
 | Prepares an MCP SERVER LISTING for FindAgent | `playbooks/agents/mcp-listing-creator.md` |
 | Builds the INSTRUCTIONS and SKILLS part of a FindAgent agent | `playbooks/agents/package-agent-creator.md` |
+| Maps an EXISTING repository in another format | `playbooks/agents/port-agent-creator.md` |
 
 ## Commands
 
@@ -22,6 +23,7 @@ This repository teaches an AI assistant to build a [FindAgent](https://findagent
 - `playbooks/commands/new-department.md`: Design a new Department (a team of published agents: pipeline, hub-orchestrator or p2p, or a workflow or orchestrator) as a findagent/department/v1 manifest with the department-creator playbook. Never creates it.
 - `playbooks/commands/new-mcp-listing.md`: Prepare an MCP SERVER LISTING (a hosted https or local stdio server that somebody already runs) with an introspected tool list and the right ownership proof, with the mcp-listing-creator playbook. Never submits.
 - `playbooks/commands/new-package-agent.md`: Build a new INSTRUCTIONS + SKILLS agent as an Agent Plugins 1.0 package (plugin.json, skills/, commands/, agents/) with the package-agent-creator playbook. Never submits.
+- `playbooks/commands/port-agent.md`: Plan how an existing repository (a skills collection, a vendor plugin, a rules repo, an OpenAPI wrapper, an MCP server, a framework agent) becomes a FindAgent agent with the port-agent-creator playbook. Plans only; never ports, submits or publishes.
 
 ## Shared reference (skills)
 

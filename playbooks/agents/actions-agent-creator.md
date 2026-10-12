@@ -21,6 +21,10 @@ The public docs: https://findagent.cloud/docs/manifest (tool actions, credential
 - **Agent Plugins package** (preferred, matches the platform's one package model): `plugin.json` with `extensions["cloud.findagent"].actions = { "tools": [...], "credential_slots": [...] }`. Every tool carries an `action`. `tools` 1-40, names unique.
 - **findagent.json v1.1** `kind: "mcp-tool"` with `tools[]` + `credential_slots[]`. Same tool and slot schemas. Declare the actions in ONE place: the declared manifest is the first of `findagent.json`, `.findagent/manifest.json`, `.findagent/findagent.json`, `.findagent.json` that exists, and a package that declares actions both there and in `plugin.json` is refused (`declared_manifest_shadowed`).
 
+## 2a. Starting from an OpenAPI spec
+
+The web import accepts an OpenAPI 3.x spec (JSON or YAML) with source `openapi` and maps each operation (GET, POST, PUT, PATCH, DELETE) to a tool. It needs an `https://` server URL. It stops at 40 operations and says so in a warning ("only the first 40 were imported"), and the first 40 in document order are rarely the right 40. So select the operations before you import: keep the ones a model needs (read and search first), drop the admin and bulk ones, and write the trimmed spec yourself, or build the tool list by hand in the shape of section 3. Then read each imported tool: a generated description is a starting point, and the annotations (read-only, destructive) still need your judgement.
+
 ## 3. A tool
 
 - `name`: MCP-safe `[A-Za-z0-9_-]`, at most 64; verb_noun; unique. `description`: 10-500 chars, says *when* to call it and what it returns.
@@ -47,7 +51,7 @@ The public docs: https://findagent.cloud/docs/manifest (tool actions, credential
 
 ## 6. Gates (paste real output)
 
-1. Run `npx --yes @findagent/cli@0.4.1 check <repo-dir>` (the platform's whole-repo check, offline: it runs the same action and credential checks on a package's `plugin.json` or a doer's `findagent.json`), and lint a lone manifest or `plugin.json` with `npx --yes @findagent/cli@0.4.1 lint <path>`. Paste the result.
+1. Run `npx --yes @findagent/cli@0.4.2 check <repo-dir>` (the platform's whole-repo check, offline: it runs the same action and credential checks on a package's `plugin.json` or a doer's `findagent.json`), and lint a lone manifest or `plugin.json` with `npx --yes @findagent/cli@0.4.2 lint <path>`. Paste the result.
 2. Contract test per tool: required args missing, wrong type, the URL host is inside `allowed_hosts` of the slot it names (a test that fails when an action host is not covered), no `http://`, annotations consistent with the method (a POST/PUT/PATCH/DELETE is not readOnly).
 3. Live check (not a mock of your own code): call each GET tool once against the real API with a real key the CALLER provides through an env var you never print, from a scratch script; report the real status codes, including a 401/404 path. If no key is available say "not checked: no credential" per tool; never score it as passed.
 4. Mutation-check the contract tests (break a host, a scheme, an annotation; assert the break landed and the test went red).
@@ -59,4 +63,4 @@ Never submit or publish. Report the files, schema output, live results, deferral
 
 ## Manifest gate (run before you report)
 
-Check the whole repository first with the platform's own offline check: `npx --yes @findagent/cli@0.4.1 check <repo-dir>` (manifest schema, the six entry tools, example prompts, egress hosts, lockfile, package parts, actions and secret shapes; no account or login, read-only; the first run downloads the CLI package, so it needs network once). Then validate a lone manifest or a package's `plugin.json` with `npx --yes @findagent/cli@0.4.1 lint <path>`. Paste both outputs verbatim; every FAIL must be fixed at the source and every WARN explained. Then run the live checks this file lists. Background skills: `skills/agent-plugins-format/SKILL.md`, `skills/code-agent-contract/SKILL.md`, `skills/submit-new-agent/SKILL.md`.
+Check the whole repository first with the platform's own offline check: `npx --yes @findagent/cli@0.4.2 check <repo-dir>` (manifest schema, the six entry tools, example prompts, egress hosts, lockfile, package parts, actions and secret shapes; no account or login, read-only; the first run downloads the CLI package, so it needs network once). Then validate a lone manifest or a package's `plugin.json` with `npx --yes @findagent/cli@0.4.2 lint <path>`. Paste both outputs verbatim; every FAIL must be fixed at the source and every WARN explained. Then run the live checks this file lists. Background skills: `skills/agent-plugins-format/SKILL.md`, `skills/code-agent-contract/SKILL.md`, `skills/submit-new-agent/SKILL.md`.

@@ -22,6 +22,24 @@ description: Reference for how FindAgent stores every agent as ONE Agent Plugins
 
 Departments are not plugins (one connection over several agents) and MCP server listings are not agents (FindAgent never runs the server).
 
+## Accepted manifest formats
+
+| Format | Recognised by |
+|---|---|
+| Agent Plugins | root `plugin.json` whose `$schema` contains `agent-plugins.org/schemas/` |
+| Codex plugin | root `plugin.json` with `extensions["com.openai"]`, or `.codex-plugin/plugin.json` |
+| Claude plugin | `.claude-plugin/plugin.json` |
+| Cursor plugin | `.cursor-plugin/plugin.json` |
+| Gemini extension | `gemini-extension.json` (its context file, default `GEMINI.md`, is kept) |
+| FindAgent manifest | `findagent.json` (also `.findagent/manifest.json`, `.findagent/findagent.json`, `.findagent.json`) |
+| Bare skills tree | no manifest: any `SKILL.md` outside dependency and build folders is a skill |
+
+Rule files: root `AGENTS.md`, `.cursorrules`, `.windsurfrules`, `.cursor/rules/*`, `.windsurf/rules/*` and `.continue/rules/*` each become a skill (they count toward the 40). `CLAUDE.md`, `.clinerules`, `copilot-instructions.md` and `CONVENTIONS.md` are not package parts; put standing instructions in `skills/instructions/SKILL.md`.
+
+## What reaches a buyer today
+
+Machine-side parts (hooks, scripts, executables, launchers) are stored and scanned but reach no buyer today: Connect never serves them, and the public plugin catalog exports every agent without that content. Do not design an agent that depends on them.
+
 ## Checking
 
-Check a package tree or any agent repository with `npx --yes @findagent/cli@0.4.1 check <dir>` (offline, whole repo); lint one manifest or a package's `plugin.json` with `npx --yes @findagent/cli@0.4.1 lint <path>`. Spec: https://agent-plugins.org and https://findagent.cloud/docs/manifest.
+Check a package tree or any agent repository with `npx --yes @findagent/cli@0.4.2 check <dir>` (offline, whole repo); lint one manifest or a package's `plugin.json` with `npx --yes @findagent/cli@0.4.2 lint <path>`. Spec: https://agent-plugins.org and https://findagent.cloud/docs/manifest.

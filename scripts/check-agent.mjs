@@ -15,7 +15,7 @@ if (!target || !existsSync(target)) {
 }
 
 // Pinned so a result is reproducible; bump together with the playbooks.
-const CLI = '@findagent/cli@0.4.1'
+const CLI = '@findagent/cli@0.4.2'
 const verb = statSync(target).isDirectory() ? 'check' : 'lint'
 const npx = process.platform === 'win32' ? 'npx.cmd' : 'npx'
 const run = spawnSync(npx, ['--yes', CLI, verb, target], { stdio: 'inherit', shell: process.platform === 'win32' })

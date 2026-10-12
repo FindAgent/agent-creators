@@ -17,4 +17,4 @@ description: How a new FindAgent agent actually gets submitted and what runs on 
 
 ## Checking
 
-Check the repository first with `npx --yes @findagent/cli@0.4.1 check <dir>`.
+Check the repository first with `npx --yes @findagent/cli@0.4.2 check <dir>`.
