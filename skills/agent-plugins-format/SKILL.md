@@ -42,4 +42,4 @@ Machine-side parts (hooks, scripts, executables, launchers) are stored and scann
 
 ## Checking
 
-Check a package tree or any agent repository with `npx --yes @findagent/cli@0.4.2 check <dir>` (offline, whole repo); lint one manifest or a package's `plugin.json` with `npx --yes @findagent/cli@0.4.2 lint <path>`. Spec: https://agent-plugins.org and https://findagent.cloud/docs/manifest.
+Check a package tree or any agent repository with `npx --yes @findagent/cli@latest check <dir>` (offline, whole repo); lint one manifest or a package's `plugin.json` with `npx --yes @findagent/cli@latest lint <path>`. Spec: https://agent-plugins.org and https://findagent.cloud/docs/manifest.

@@ -59,7 +59,7 @@ The importer reads one tree in one of these formats (first match wins in this or
 | FindAgent manifest | `findagent.json` (or `.findagent/manifest.json`, `.findagent/findagent.json`, `.findagent.json`) | For actions or a code agent; see the other creators. |
 | Bare skills tree | no manifest at all | Any `SKILL.md` outside dependency and build folders is a skill (its folder name is the id). |
 
-A `plugin.json` that is not a JSON object is refused (`unreadable_manifest`). Run `npx --yes @findagent/cli@0.4.2 check <dir>` and read which format it reports.
+A `plugin.json` that is not a JSON object is refused (`unreadable_manifest`). Run `npx --yes @findagent/cli@latest check <dir>` and read which format it reports.
 
 ## 2b. Rule files and standing instructions
 
@@ -105,7 +105,7 @@ FindAgent accepts only the OWNER's own repository: you attest the files are your
 ## 4. Gates (paste real output, no claim without evidence)
 
 1. A validation script you write (outside `scripts/` and `bin/`, which are machine-side) that checks: plugin.json shape and name rule; every skill folder has SKILL.md with valid frontmatter and name equals folder; description lengths; skill count at most 40; no binary; no machine-side part unless intended; no secret shapes. Run it; also mutation-check it (break a rule, watch it go red, assert the break landed).
-2. Cross-check against the real importer: run `npx --yes @findagent/cli@0.4.2 check <repo-dir>` (it runs the platform's package normaliser offline: parts, left-out binaries, machine-side parts, warnings), and optionally upload the folder or zip on https://findagent.cloud/submit (Upload door) to read the same "We found" card. Zero unexplained warnings. Nothing is submitted until you press submit.
+2. Cross-check against the real importer: run `npx --yes @findagent/cli@latest check <repo-dir>` (it runs the platform's package normaliser offline: parts, left-out binaries, machine-side parts, warnings), and optionally upload the folder or zip on https://findagent.cloud/submit (Upload door) to read the same "We found" card. Zero unexplained warnings. Nothing is submitted until you press submit.
 3. Read every skill once as the buyer's model would: no contradictions between Instructions and skills, no dead links.
 4. `grep -rniE "TODO|FIXME|lorem|placeholder|your_api_key"` over the tree: nothing meaningful.
 
@@ -117,4 +117,4 @@ FindAgent accepts only the OWNER's own repository: you attest the files are your
 
 ## Manifest gate (run before you report)
 
-Check the whole repository first with the platform's own offline check: `npx --yes @findagent/cli@0.4.2 check <repo-dir>` (manifest schema, the six entry tools, example prompts, egress hosts, lockfile, package parts, actions and secret shapes; no account or login, read-only; the first run downloads the CLI package, so it needs network once). Then validate a lone manifest or a package's `plugin.json` with `npx --yes @findagent/cli@0.4.2 lint <path>`. Paste both outputs verbatim; every FAIL must be fixed at the source and every WARN explained. Then run the live checks this file lists. Background skills: `agent-plugins-format`, `code-agent-contract`, `submit-new-agent`.
+Check the whole repository first with the platform's own offline check: `npx --yes @findagent/cli@latest check <repo-dir>` (manifest schema, the six entry tools, example prompts, egress hosts, lockfile, package parts, actions and secret shapes; no account or login, read-only; the first run downloads the CLI package, so it needs network once). Then validate a lone manifest or a package's `plugin.json` with `npx --yes @findagent/cli@latest lint <path>`. Paste both outputs verbatim; every FAIL must be fixed at the source and every WARN explained. Then run the live checks this file lists. Background skills: `agent-plugins-format`, `code-agent-contract`, `submit-new-agent`.

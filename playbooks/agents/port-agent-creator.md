@@ -20,7 +20,7 @@ If any answer is "no" or "not sure", report it and stop. Do not work around it.
 
 ## 1. Read first
 
-The public docs: https://findagent.cloud/docs/creator-guide and https://findagent.cloud/docs/manifest, the Agent Plugins format at https://agent-plugins.org and the Agent Skills specification at https://agentskills.io/specification. Then run the platform's own offline check on the repository to see what it detects: `npx --yes @findagent/cli@0.4.2 check <repo-dir>` (read-only, no account; it needs network once to download the CLI). Paste the output.
+The public docs: https://findagent.cloud/docs/creator-guide and https://findagent.cloud/docs/manifest, the Agent Plugins format at https://agent-plugins.org and the Agent Skills specification at https://agentskills.io/specification. Then run the platform's own offline check on the repository to see what it detects: `npx --yes @findagent/cli@latest check <repo-dir>` (read-only, no account; it needs network once to download the CLI). Paste the output.
 
 ## 2. Decision table
 
@@ -66,4 +66,4 @@ Never port, submit or publish yourself. Hand the plan to the owner and name the 
 
 ## Manifest gate (run before you report)
 
-Check the whole repository with the platform's own offline check: `npx --yes @findagent/cli@0.4.2 check <repo-dir>` (read-only; the first run downloads the CLI package, so it needs network once). Paste the output verbatim. Background skills: `skills/agent-plugins-format/SKILL.md`, `skills/code-agent-contract/SKILL.md`, `skills/submit-new-agent/SKILL.md`.
+Check the whole repository with the platform's own offline check: `npx --yes @findagent/cli@latest check <repo-dir>` (read-only; the first run downloads the CLI package, so it needs network once). Paste the output verbatim. Background skills: `skills/agent-plugins-format/SKILL.md`, `skills/code-agent-contract/SKILL.md`, `skills/submit-new-agent/SKILL.md`.

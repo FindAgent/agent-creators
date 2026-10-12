@@ -102,7 +102,7 @@ const index = [
   '',
   '## Scripts',
   '',
-  '- `node scripts/check-agent.mjs <path>`: lint a manifest with the same validator the marketplace runs (Node 20+; downloads the pinned `@findagent/cli` through npx).',
+  '- `node scripts/check-agent.mjs <path>`: lint a manifest with the same validator the marketplace runs (Node 20+; downloads the latest `@findagent/cli` through npx).',
   '- `node scripts/build-adapters.mjs`: regenerate this file and the per-assistant files after editing `agents/`, `commands/` or `skills/`.',
   '',
   '## Submitting over MCP',

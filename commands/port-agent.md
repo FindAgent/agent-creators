@@ -9,4 +9,4 @@ Follow the `port-agent-creator` creator for this request: $ARGUMENTS
 
 Settle first: that you own the repository and what its licence allows; which row of the decision table it falls in; whether it holds more than one kind of part.
 
-Hold the creator to: the ownership and licence check before anything else, the offline `npx --yes @findagent/cli@0.4.2 check` output pasted, a written plan that says what is kept, left out, refused and not to be relied on, and "plan only, wait for the go, never submit or publish". Then hand the plan to the matching creator.
+Hold the creator to: the ownership and licence check before anything else, the offline `npx --yes @findagent/cli@latest check` output pasted, a written plan that says what is kept, left out, refused and not to be relied on, and "plan only, wait for the go, never submit or publish". Then hand the plan to the matching creator.
