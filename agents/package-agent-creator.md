@@ -96,6 +96,10 @@ A Custom GPT or Gem is instructions plus, optionally, actions from an OpenAPI sc
 
 FindAgent accepts only the OWNER's own repository: you attest the files are your own at submit, and a third-party repository cannot be brought in. Before porting, read the source repository's LICENSE: permissive licences (MIT, Apache-2.0, BSD) need their notice kept; copyleft licences (GPL, AGPL, CC-BY-SA) bind the derived package, so the owner must decide that on purpose; no licence means all rights reserved and you may not port it. Put the licence you choose in the repository root.
 
+## 2g. A stage that must stop or go
+
+If the package's instructions describe a checking stage (review, test, audit, approval), have that stage end with one fixed decision line such as `VERDICT: PASS` or `VERDICT: BLOCKED`, and name the producing stage as a different role. A department that later uses the agent can then match the line (workflow mode, `contains`) or quote it in its report instructions (hub mode). Without a fixed line the stage can only be read by a person.
+
 ## 3. Quality bar (the buyer's model reads these files)
 
 - Instructions: one clear role, the boundaries ("will not do"), how to say "I could not check this", and no invented facts. State the output shape.

@@ -51,6 +51,16 @@ Decisions, with the platform's reasons:
 - `report_instructions` is scanned for secrets and injection on write because it reaches every member's system prompt. Keep it to reporting style and standing rules.
 - Alias: lowercase slug of the role, unique. Two members with the same alias draw ONE node on the canvas; the builder disambiguates, so never hand-write duplicates.
 
+## 3a. Gates between members: a decision word, an independent checker, one worked example
+
+Three rules, because a team that cannot say "stop" or "go" in a form the platform can read does not gate anything.
+
+1. **Give every checking stage one decision line.** The member that reviews, tests or audits ends its answer with a fixed line such as `VERDICT: PASS` or `VERDICT: BLOCKED`, and its instructions say so. Prose such as "looks mostly fine" cannot be matched by anything.
+2. **Match that line where the mode can.** In `workflow` mode a step's `when` condition can test the checker's whole text output with the `contains` operator (source `{ from: 'member', alias: '<checker>' }`, no `path`), for example `contains "VERDICT: PASS"` on the reviewer. There is no `not_contains` operator, so gate on the PASS line rather than on the absence of a BLOCKED line, and give the gated step a `depends_on` on the checker step: in the same wave the checker's output is not there yet and the condition silently reads false. In `hub-orchestrator` and `orchestrator` modes `when` conditions do not apply: the hub or planner reads the line and the order lives in `report_instructions`, so write the rule there ("do not start the next stage after `VERDICT: BLOCKED`"). Say in your design which of the two you chose; do not promise a structural gate in a hub department.
+3. **The checker is not the producer.** Never let the member that wrote something also be the member that passes it. Give the checking role to a different member, and have it read the producer's output rather than the producer's own summary of it.
+
+Worked shape (workflow mode): `developer` -> `reviewer` (ends with a `VERDICT:` line) -> `security` (with `depends_on` the reviewer) runs only `when` the reviewer's output contains `VERDICT: PASS` -> `librarian` logs the outcome. Show that path in section 5, gate 4, including which condition fires for a passing and a blocked sample.
+
 ## 4. How it runs (state this in the description you give the owner)
 
 - **In chat**: the buyer's own assistant does the thinking and calls the members' tools; no extra cost, no key needed. If the server cannot run the department itself, `run_department` returns a guided plan the assistant follows; the platform enforces order and completion.
