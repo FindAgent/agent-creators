@@ -103,6 +103,7 @@ If the package's instructions describe a checking stage (review, test, audit, ap
 ## 3. Quality bar (the buyer's model reads these files)
 
 - Instructions: one clear role, the boundaries ("will not do"), how to say "I could not check this", and no invented facts. State the output shape.
+- Output budget: a package may be used as a department member, where the whole run has a fixed output allowance (about 89k tokens in a hosted run, shared by all the members). Say in the instructions how long the answer may be ("about N words"), ask for one line per item in long lists, and write each section once instead of retyping it into the next tool.
 - Each skill: one job, a `description` that says *when* to use it and when not to, concrete steps, a worked example, and what to return. Move long reference material to `references/` and link it.
 - Commands: one verb, a one-line `description`, arguments named in the body.
 - Honesty: a skill must never claim a capability the package does not have (no "I browsed", no "I ran").

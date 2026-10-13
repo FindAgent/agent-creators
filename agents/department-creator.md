@@ -67,6 +67,17 @@ Worked shape (workflow mode): `developer` -> `reviewer` (ends with a `VERDICT:` 
 - **In the background** (unattended or scheduled): the department uses the buyer's OWN LLM key from the vault; FindAgent supplies none. A required member that did not run blocks the report.
 - A department is always `draft` status; there is no publish flow. Gate nothing on `published`.
 
+## 4a. Size the chain to the hosted wall clock, and give every member an output budget
+
+A department's value is what it plans and checks, and a run that does not finish delivers none of it. Size the chain before you hand it over.
+
+- **The ceiling is hard.** A hosted background run stops after at most about 740 seconds (the platform's function limit minus a safety margin); a setting can only shorten it. In the measured run (declarative members whose prompt-template tools return at once, one model) the members' time was model output at about 120 tokens per second; members with HTTP actions or code also spend time in their calls, and the rate varies with the buyer's model. So the whole run has about 89,000 output tokens, about 76,000 to 82,000 of them usable after call overhead, and the SUM of the members' output must fit, not each member alone. Aim at 62,000 or less (about 20% under the usable figure). Members you did not measure are estimates, say so.
+- **Give every member an output budget** in its instructions, in words ("about N words in total"), and a target in tokens in your design: for example an intake 3.5k, a planner 6k, a designer, developer and tester 9k each, a reviewer and a security checker 6k each, a librarian 3k.
+- **Write each thing once.** A tool that assembles a report (`draft_*`) takes the earlier sections as arguments: tell it to carry the notes as they stand and add nothing, and keep free-text tools to one line per item. A section typed as prose, copied into a tool argument and retyped in the final report costs three times.
+- **A member answer that presents finished work with no tool result behind it is refused.** A member that is cancelled by its own budget after it did its work and is then retried does not keep those tool results, so its retry must call the tools again.
+- **Who does the work.** A department plans and reviews; its declarative members render instruction text and read nothing from a repository (members with HTTP actions or code can reach services). The assistant that connects is the hands: say so in the description you give the owner, and tell them to connect it to an assistant that has the repository when they want a built change.
+- Say in your design which of these limits you measured and which you estimated.
+
 ## 5. Gates (paste real output)
 
 1. Build the manifest and lint it with `npx --yes @findagent/cli@latest lint <department-manifest>`. Paste the result, including the per-topology member cap (p2p 8, others 16).
