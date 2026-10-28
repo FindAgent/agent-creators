@@ -7,6 +7,6 @@ argument-hint: <server URL or repository>
 
 Follow the `mcp-listing-creator` creator for this request: $ARGUMENTS
 
-Settle first: hosted (an https MCP endpoint) or local (a stdio launch command plus a public repository); whose server it is (the vendor's own identity, not a lookalike account); whether the server answers `tools/list` anonymously (otherwise it is OAuth-gated and tools load later). A listing carries no price and no category.
+Settle first: hosted (an https MCP endpoint) or local (a stdio launch command; a public repository is optional to create but needed to claim it); whose server it is (the vendor's own identity, not a lookalike account); whether the server answers `tools/list` anonymously (otherwise it is OAuth-gated and tools load later). A listing carries no price and no category.
 
-Hold the creator to the above: "introspect the real endpoint and classify on the response body, not the status code", "never submit or publish". Submit at https://findagent.cloud/submit (MCP server door) when you are ready.
+Hold the creator to the above: "introspect the real endpoint and classify on the response body, not the status code", "never submit or publish". Submit at https://findagent.cloud/submit (MCP server door), or with `findagent_create_remote_mcp` (hosted) / `findagent_create_local_mcp` (local), when you are ready.

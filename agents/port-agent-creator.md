@@ -28,7 +28,7 @@ The public docs: https://findagent.cloud/docs/creator-guide and https://findagen
 | A collection of `SKILL.md` folders | An Agent Plugins package. More than 40 skills: split into several agents | `package-agent-creator` (section 2c) |
 | A Claude, Codex, Cursor or Gemini plugin | The same package: the plugin manifest is read as it is | `package-agent-creator` (section 2a) |
 | Only rules files (`AGENTS.md`, `.cursorrules`, `.windsurfrules`, `.cursor/rules`, and so on) | A package; recognised rule files become skills, standing instructions move to `skills/instructions/SKILL.md` | `package-agent-creator` (section 2b) |
-| A Custom GPT or a Gem (instructions plus an OpenAPI schema) | The Editor at `https://findagent.cloud/editor?from=custom-gpt` | `package-agent-creator` (section 2e), `actions-agent-creator` |
+| A Custom GPT or a Gem (instructions plus an OpenAPI schema; see the dated retirement note in `package-agent-creator` section 2e) | The Editor at `https://findagent.cloud/editor?from=custom-gpt` | `package-agent-creator` (section 2e), `actions-agent-creator` |
 | An OpenAPI spec or a thin wrapper that only calls one HTTP API | Actions: declarative tools using the buyer's own key. Select at most 40 operations | `actions-agent-creator` (section 2a) |
 | An MCP server in Node or Python whose logic needs code | A code agent (hosted in the sandbox, or local run) | `code-agent-creator` |
 | An MCP server in Go, Rust, Java or another runtime | Not a code agent (only `node22`, `node24`, `python3.13` exist). List the server you already run as a local stdio listing, or port it to Node or Python first | `mcp-listing-creator` or `code-agent-creator` |

@@ -81,14 +81,14 @@ A department's value is what it plans and checks, and a run that does not finish
 
 ## 5. Gates (paste real output)
 
-1. Build the manifest and lint it with `npx --yes @findagent/cli@latest lint <department-manifest>`. Paste the result, including the per-topology member cap (p2p 8, others 16).
+1. Build the manifest and lint it with `npx --yes @findagent/cli@latest lint <department-manifest>`; `check <repo-dir>` also validates any JSON file whose `schema_version` is `findagent/department/v1`, whatever its name. Paste the result, including the per-topology member cap (p2p 8, others 16).
 2. Prove each member exists, is published and is eligible (section 2) by reading the catalogue (`findagent_get_agent` / the database read your tools allow). A member that is a listing, a local-only code agent or unpublished fails the design.
 3. Check role overlap: list each member's tools and say which goal step each serves; a member with no step is removed.
 4. For `workflow` / `orchestrator`, show the path a sample goal takes member by member and which `when` conditions fire.
 
 ## 6. Handoff
 
-You never create the department. Hand the user: the manifest JSON, the validation output, the member table, and the creation route: the web builder `https://findagent.cloud/departments/new` (behind the `departments` flag, admin-open) or `POST /api/departments`; afterwards `findagent_edit_department` can change only `report_instructions`, and composition changes go through the builder. Report every doubt (a member whose tools do not fit the role, an undeclared dependency).
+You never create the department. Hand the user: the manifest JSON, the validation output, the member table, and the creation route: the web builder `https://findagent.cloud/departments/new` (behind the `departments` flag, admin-open) `POST /api/departments`, or the MCP tool `findagent_create_department` (same flag; also `findagent_get_department`, `findagent_list_departments` and `findagent_archive_department`). The MCP tool creates only `pipeline`, `hub-orchestrator` and `p2p` departments from published public agents: workflow or orchestrator mode, flow hints and explicit edges are refused there, so a design that uses them goes through the builder. Afterwards `findagent_edit_department` can change `report_instructions`, name and description and can restore an archived department; members, topology, orchestration and flows go through the builder. Report every doubt (a member whose tools do not fit the role, an undeclared dependency).
 
 ## Manifest gate (run before you report)
 
