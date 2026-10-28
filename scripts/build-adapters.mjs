@@ -4,7 +4,7 @@
 //   node scripts/build-adapters.mjs --check  fail when a generated file is stale or orphaned (CI)
 // Generated: playbooks/**, AGENTS.md, CLAUDE.md, GEMINI.md, CONVENTIONS.md, .aider.conf.yml,
 // .github/copilot-instructions.md, .cursor/rules/*.mdc and the MCP client configs
-// (mcp.json, .mcp.json, .cursor/mcp.json, .vscode/mcp.json). Edit agents/, commands/ and skills/,
+// (mcp.json in the Agent Plugins 1.0 spelling, .mcp.json, .cursor/mcp.json, .vscode/mcp.json). Edit agents/, commands/ and skills/,
 // never the generated files.
 
 import { mkdirSync, readFileSync, readdirSync, writeFileSync, existsSync, statSync } from 'node:fs'
@@ -17,6 +17,9 @@ const out = new Map()
 
 const PLATFORM_MCP_URL = 'https://mcp.findagent.cloud/mcp'
 const SKILL_NAMES = ['agent-plugins-format', 'code-agent-contract', 'submit-new-agent']
+// Agent Plugins 1.0 mcp.json: `$schema` and `mcpServers` only, and `streamable-http` is the only valid type for a
+// streamable HTTP server (https://agent-plugins.org/specification, section 7).
+const MCP_SCHEMA = 'https://agent-plugins.org/schemas/1.0.0/mcp.schema.json'
 
 function parse(file) {
   const raw = readFileSync(file, 'utf8').replace(/\r\n/g, '\n')
@@ -98,16 +101,17 @@ const index = [
   '- network access once, to download the CLI the lint step runs (`npx @findagent/cli`), or a local clone of it;',
   '- a connected FindAgent MCP server (`mcp.json`) for the catalogue and submission steps;',
   '- Node 20+ for the scripts, plus `pnpm` and headless Chromium for code-agent panel checks, or Python 3.13 for Python agents;',
+  "- Python 3 for the scaffold script of the reference template (`python scripts/init_agent.py <variant> <dir>` in https://github.com/FindAgent/agent-template), which every creator starts from, even for a Node agent;",
   '- an MCP client to run the finished agent live.',
   '',
   '## Scripts',
   '',
-  '- `node scripts/check-agent.mjs <path>`: lint a manifest with the same validator the marketplace runs (Node 20+; downloads the latest `@findagent/cli` through npx).',
+  '- `node scripts/check-agent.mjs <path>`: run the platform\'s own offline check with the latest `@findagent/cli` through npx (Node 20+): `check` on a repository folder, `lint` on one manifest file.',
   '- `node scripts/build-adapters.mjs`: regenerate this file and the per-assistant files after editing `agents/`, `commands/` or `skills/`.',
   '',
   '## Submitting over MCP',
   '',
-  `Connect the FindAgent platform MCP (\`${PLATFORM_MCP_URL}\`; ready-made configs: \`mcp.json\`, \`.mcp.json\`, \`.cursor/mcp.json\`, \`.vscode/mcp.json\`). Create drafts with \`findagent_create_code_draft\` (code), \`findagent_create_package_draft\` (instructions and skills) or \`findagent_create_draft\` (actions), then \`findagent_submit_for_review\`. Use these repositories as the reference: https://github.com/FindAgent/agent-template for code and these playbooks for every part. A person reviews every submission.`,
+  `Connect the FindAgent platform MCP (\`${PLATFORM_MCP_URL}\`). Ready-made configs exist for Claude Code (\`.mcp.json\`), Cursor (\`.cursor/mcp.json\`) and VS Code with GitHub Copilot (\`.vscode/mcp.json\`); \`mcp.json\` is the same server in the Agent Plugins format. For any other assistant add the server by hand (README, "Connect the platform MCP"). Create drafts with \`findagent_create_code_draft\` (code; connect GitHub first, see \`playbooks/commands/connect-github.md\`), \`findagent_create_package_draft\` (instructions and skills, or a package with actions) or \`findagent_create_draft\` (a \`findagent.json\` doer with actions), then \`findagent_preflight\` and \`findagent_submit_for_review\` (it needs \`confirm_original\`, \`confirm_not_prohibited\` and \`llms\`, and two calls: the first returns the final slug, the second passes it as \`confirm_slug\`). Package uploads share a limit of 10 per 15 minutes. Use these repositories as the reference: https://github.com/FindAgent/agent-template for code and these playbooks for every part. A person reviews every submission.`,
   '',
   '## Rules every playbook shares',
   '',
@@ -136,8 +140,12 @@ out.set(
 )
 
 const json = (o) => `${JSON.stringify(o, null, 2)}\n`
+// Claude Code, VS Code and Cursor read `type: "http"` from their own files; mcp.json is the Agent Plugins spelling.
 const httpServer = { type: 'http', url: PLATFORM_MCP_URL }
-out.set('mcp.json', json({ mcpServers: { findagent: httpServer } }))
+out.set(
+  'mcp.json',
+  json({ $schema: MCP_SCHEMA, mcpServers: { findagent: { type: 'streamable-http', url: PLATFORM_MCP_URL } } })
+)
 out.set('.mcp.json', json({ mcpServers: { findagent: httpServer } }))
 out.set('.cursor/mcp.json', json({ mcpServers: { findagent: { url: PLATFORM_MCP_URL } } }))
 out.set('.vscode/mcp.json', json({ servers: { findagent: httpServer } }))
