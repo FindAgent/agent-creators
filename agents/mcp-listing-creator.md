@@ -17,12 +17,12 @@ An **MCP server listing** is FindAgent's directory record of a server that someb
 
 ## 1. Read first (public docs)
 
-The public docs: https://findagent.cloud/docs/creator-guide and https://findagent.cloud/docs/manifest, and the listing pages under https://findagent.cloud/mcp for how existing entries look.
+The public docs: https://findagent.cloud/docs/creator-guide and https://findagent.cloud/docs/manifest, and the listing pages under https://findagent.cloud/mcp for how existing entries look. The reference checklist is the `listing` variant of https://github.com/FindAgent/agent-template (it has no manifest): `python scripts/init_agent.py listing <new-repo-dir>` (the scaffold script is a Python 3 script, so Python 3 must be installed).
 
 ## 2. Connection model (derived, never typed)
 
 - **Hosted**: the manifest carries `delivery.mcp.remote.url`, an `https://` MCP endpoint. The buyer's client connects there.
-- **Local**: `delivery.mcp.stdio` (a launch command, normally `npx <package>` or a repo's run command). The buyer runs it on their own machine; FindAgent only shows how. A local listing needs a public source repository so the buyer can read what they will run.
+- **Local**: `delivery.mcp.stdio` (a launch command, normally `npx <package>` or a repo's run command). The buyer runs it on their own machine; FindAgent only shows how. A local listing may be created without a repository, but a public source repository is what lets the buyer read what they will run and is what a claim of the listing is proven against.
 - A server that FindAgent would run is NOT a listing. `exec: findagent-hosted` is a proxy to your own server, not a listing.
 
 ## 3. What the entry carries (and refuses)
@@ -50,7 +50,7 @@ A vendor claims the listing to become its owner (`creator_id` moves, they can ed
 
 ## 6. Handoff
 
-You never submit. Hand the user: the entry fields, the introspection output, the proof method for this listing, and the route: web `https://findagent.cloud/submit` -> **MCP server** door (introspects for you), or, from an MCP client, `findagent_create_remote_mcp` (hosted over https) or `findagent_create_local_mcp` (a stdio command the buyer runs: `command`, `args`, optional `repo` and `repo_path`); later changes through `findagent_reintrospect_mcp`. Listings go through human review; nothing here auto-approves for a non-admin.
+You never submit. Hand the user: the entry fields, the introspection output, the proof method for this listing, and the route: web `https://findagent.cloud/submit` -> **MCP server** door (introspects for you), or, from an MCP client, `findagent_create_remote_mcp` (hosted over https) or `findagent_create_local_mcp` (a stdio command the buyer runs: `command`, `args`, 1-5 example prompts, optional `repo` and `repo_path`); later changes through `findagent_new_version`, which routes by kind (`findagent_reintrospect_mcp` re-scans a hosted endpoint only). Listings go through human review; nothing here auto-approves for a non-admin.
 
 ## Manifest gate (run before you report)
 

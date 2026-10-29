@@ -13,7 +13,7 @@ Every FindAgent agent is one package made of four parts: **Instructions**, **Ski
 | `mcp-listing-creator` | An **MCP server listing** for a server somebody already runs | `/new-mcp-listing` |
 | `port-agent-creator` | A **port plan** for an existing repository (skills collection, vendor plugin, rules repo, OpenAPI wrapper, MCP server, framework agent): which creator takes it, and what is kept, left out or refused | `/port-agent` |
 
-Plus `/check-agent` (or `node scripts/check-agent.mjs`, which lints a `findagent.json` or a department manifest with `npx @findagent/cli lint`; a package's `plugin.json` is checked by uploading the folder on the submit page and reading the "We found" card) and three skills the creators share: `agent-plugins-format`, `code-agent-contract`, `submit-new-agent`.
+Plus three helper commands: `/check-agent` (or `node scripts/check-agent.mjs <path>`, which runs `npx @findagent/cli check` on a repository folder and `lint` on one manifest file), `/use-the-editor` (how to write and submit a package in the browser Editor at [findagent.cloud/editor](https://findagent.cloud/editor)) and `/connect-github` (how to connect GitHub for the repository doors). Three skills are shared by the creators: `agent-plugins-format`, `code-agent-contract`, `submit-new-agent`.
 
 ## Use it with any assistant
 
@@ -32,17 +32,38 @@ Build a code agent that checks the health of a GitHub repository, in node.
 Follow playbooks/agents/code-agent-creator.md.
 ```
 
-(Claude Code users can type `/new-code-agent <idea>` instead.) Every assistant gets the FindAgent platform MCP from `mcp.json` (also `.mcp.json`, `.cursor/mcp.json`, `.vscode/mcp.json`), so it can also create the draft over MCP. The creator starts from the reference template, [FindAgent/agent-template](https://github.com/FindAgent/agent-template), builds and tests the agent in your own repository, lints the manifest and stops. **No creator submits or publishes anything.** You submit at [findagent.cloud/submit](https://findagent.cloud/submit); the submission is scanned and reviewed by a person.
+(Claude Code users can type `/new-code-agent <idea>` instead.) With the FindAgent platform MCP connected (next section) the assistant can also create the draft over MCP. The creator starts from the reference template, [FindAgent/agent-template](https://github.com/FindAgent/agent-template) (see below for which variant), builds and tests the agent in your own repository, lints the manifest and stops. **No creator submits or publishes anything.** You submit at [findagent.cloud/submit](https://findagent.cloud/submit); the submission is scanned and reviewed by a person.
+
+## Connect the platform MCP
+
+The platform MCP is `https://mcp.findagent.cloud/mcp`. It uses OAuth, so an unauthenticated request answers 401 by design and your client sends you through a sign-in. This repository ships a ready-made config for three assistants only:
+
+| Assistant | Config in this repository |
+|---|---|
+| Claude Code | `.mcp.json` |
+| Cursor | `.cursor/mcp.json` |
+| VS Code with GitHub Copilot | `.vscode/mcp.json` |
+
+`mcp.json` holds the same server in the [Agent Plugins](https://agent-plugins.org) format, for tools that install this repository as a package. Other assistants need one manual step:
+
+- **Codex:** `codex mcp add findagent --url https://mcp.findagent.cloud/mcp` (or a `[mcp_servers.findagent]` table with `url` in `~/.codex/config.toml`).
+- **Gemini CLI:** `gemini mcp add --transport http findagent https://mcp.findagent.cloud/mcp`.
+- **Windsurf:** add `"findagent": { "serverUrl": "https://mcp.findagent.cloud/mcp" }` under `mcpServers` in the `mcp_config.json` that Windsurf's MCP settings open (see Windsurf's MCP docs for where it lives).
+- **Aider:** this repository has no MCP config for it; the creators still work without MCP, and you submit at [findagent.cloud/submit](https://findagent.cloud/submit).
+
+Without the MCP the playbooks still build and check the agent; only the "create the draft over MCP" step is left to you on the web.
 
 ## Scripts
 
 ```
-node scripts/check-agent.mjs <path to findagent.json>   # lint with the marketplace's own validator
+node scripts/check-agent.mjs <repository folder>          # the marketplace's own whole-repo check (findagent check)
+node scripts/check-agent.mjs <findagent.json | plugin.json>  # lint one manifest (findagent lint)
 node scripts/build-adapters.mjs                         # regenerate playbooks/ and the per-assistant files
 node scripts/build-adapters.mjs --check                 # CI: fail when they are stale
+node scripts/check-mcp-configs.mjs                      # CI: the four MCP configs are valid for their client
 ```
 
-`agents/` and `commands/` are the source; `playbooks/`, `AGENTS.md`, `GEMINI.md`, `CONVENTIONS.md`, `.github/copilot-instructions.md` and `.cursor/rules/` are generated from them.
+`agents/`, `commands/` and `skills/` are the source; `mcp.json`, `.mcp.json`, `.cursor/mcp.json`, `.vscode/mcp.json`, `playbooks/`, `AGENTS.md`, `GEMINI.md`, `CONVENTIONS.md`, `.github/copilot-instructions.md` and `.cursor/rules/` are generated from them.
 
 ## Which assistants this was checked with
 
@@ -50,7 +71,19 @@ The playbooks are plain Markdown, so any assistant that can read files and run c
 (`CLAUDE.md`, `GEMINI.md`, `CONVENTIONS.md`, `.github/copilot-instructions.md`, `.cursor/rules/`, `.aider.conf.yml`) are
 generated and CI checks they are current. The scripts were run here on Windows with Node 25; CI is configured for Node 22. The
 playbooks were exercised end to end with Claude Code only; Codex, Cursor, Gemini CLI, GitHub Copilot and Aider read the
-same files but no run with them is recorded here.
+same files but no run with them is recorded here. The Codex, Gemini CLI and Windsurf steps under "Connect the platform MCP" are taken from those tools' documentation and were not run here.
+
+## Which template variant each creator uses
+
+[FindAgent/agent-template](https://github.com/FindAgent/agent-template) has six variants, scaffolded with `python scripts/init_agent.py <variant> <new-repo-dir>`. That script is Python 3, so **Python 3 must be installed even for a Node agent**.
+
+| Creator | Variant |
+|---|---|
+| `code-agent-creator` | `node`, `python` or `framework` |
+| `package-agent-creator` | `package` |
+| `actions-agent-creator` | `actions` |
+| `mcp-listing-creator` | `listing` |
+| `department-creator`, `port-agent-creator` | none (a manifest, or a plan) |
 
 ## What they will not do
 

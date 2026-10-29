@@ -11,12 +11,12 @@ description: Reference for how FindAgent stores every agent as ONE Agent Plugins
 
 | Path | Part | Notes |
 |---|---|---|
-| `plugin.json` | identity | `$schema` https://agent-plugins.org/schemas/1.0.0/plugin.schema.json; `name` `^[a-z0-9](?:[a-z0-9.-]{0,62}[a-z0-9])?$` (refused, never rewritten) |
+| `plugin.json` | identity | `$schema` https://agent-plugins.org/schemas/1.0.0/plugin.schema.json; `name` `^[a-z0-9](?:[a-z0-9.-]{0,62}[a-z0-9])?$` (refused, never rewritten); the Agent Plugins spec (section 5.5) also forbids `--` and `..` in a name, and Claude Code's validator rejects names starting `claude-`, `anthropic-`, `anthropics-` or `cc-plugin-`, so avoid all of them |
 | `skills/<id>/SKILL.md` | Skills | frontmatter `name` (lowercase, digits, single hyphens, equal to the folder id) + `description` (<=1024); at most 40 per agent, refused not cut |
 | `skills/instructions/SKILL.md` | Instructions | the reserved skill carrying the agent's behaviour |
 | `extensions["cloud.findagent"].actions` | Actions | `{tools, credential_slots}`; http / prompt-template only; secrets are declarations, never values |
 | `findagent.json` (v1.2, `kind: code-bundle`) | Code | entrypoint, runtime, `allowed_hosts`, `skills[]`, `example_prompts[]`. `skills[]` are the code's MCP tool descriptors, NOT Agent Skills. A code repo may also carry `plugin.json` + `skills/<id>/SKILL.md` (+ `commands/`, `agents/`): only those paths become its package; generated launcher configs, `hooks/`, `scripts/` and the code never do |
-| `commands/*.md`, `agents/*.md` | commands, sub-agents | served in Connect as prompts `command-<name>` / `agent-<name>` |
+| `commands/*.md`, `agents/*.md` | commands, sub-agents | client extensions, not Agent Plugins 1.0 paths (the spec defines only `skills/` and `mcp.json`); FindAgent reads them and serves them in Connect as prompts `command-<name>` / `agent-<name>` |
 | `hooks/`, `scripts/`, `bin/`, a launcher `mcp.json` with a `command`, shell forms, `allowed-tools: Bash` | machine-side | **Install only**, off Connect, buyer consent; never the default |
 | `mcp.json` | gateway address | written by FindAgent in the Agent Plugins form (`$schema` + `mcpServers`, `type: "streamable-http"`); Claude Code's own `.mcp.json` (`type: "http"`) is written beside it. Never hand-author either |
 

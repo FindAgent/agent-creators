@@ -13,16 +13,18 @@ An agent whose tools are "call this API with these parameters" is a doer: build 
 
 ## 1. Read first (public docs)
 
-The public docs: https://findagent.cloud/docs/manifest (tool actions, credential slots, guardrails, annotations), https://findagent.cloud/docs/security, https://findagent.cloud/docs/creator-guide. Work in a scratch directory.
+The public docs: https://findagent.cloud/docs/manifest (tool actions, credential slots, guardrails, annotations), https://findagent.cloud/docs/security, https://findagent.cloud/docs/creator-guide. Work in a scratch directory. The reference scaffold is the `actions` variant of https://github.com/FindAgent/agent-template: `python scripts/init_agent.py actions <new-repo-dir> --name "<Agent Name>"` (The scaffold script is a Python 3 script, so Python 3 must be installed even when the agent itself is not Python).
 
 ## 2. Two equivalent homes (pick one, same content)
 
-- **Agent Plugins package** (preferred, matches the platform's one package model): `plugin.json` with `extensions["cloud.findagent"].actions = { "tools": [...], "credential_slots": [...] }`. Every tool carries an `action`. `tools` 1-40, names unique.
-- **findagent.json v1.1** `kind: "mcp-tool"` with `tools[]` + `credential_slots[]`. Same tool and slot schemas. Declare the actions in ONE place: the declared manifest is the first of `findagent.json`, `.findagent/manifest.json`, `.findagent/findagent.json`, `.findagent.json` that exists, and a package that declares actions both there and in `plugin.json` is refused (`declared_manifest_shadowed`).
+- **Agent Plugins package** (preferred, matches the platform's one package model): `plugin.json` with `extensions["cloud.findagent"].actions = { "tools": [...], "credential_slots": [...] }`. Every tool carries an `action`. `tools` 1-40, names unique. A package that holds only these actions, with no skill, command or sub-agent, is refused today (`nothing_to_package`); add at least one of those, or use the `findagent.json` home below.
+- **findagent.json v1.1** `kind: "mcp-tool"` with `tools[]` + `credential_slots[]`. Same tool and slot schemas. The doer manifest also requires `name` (3-80 characters), a `system_prompt` of at least 50 characters and `example_prompts` (1-5). Declare the actions in ONE place: the declared manifest is the first of `findagent.json`, `.findagent/manifest.json`, `.findagent/findagent.json`, `.findagent.json` that exists, and a package that declares actions both there and in `plugin.json` is refused (`declared_manifest_shadowed`).
 
 ## 2a. Starting from an OpenAPI spec
 
 The web import accepts an OpenAPI 3.x spec (JSON or YAML) with source `openapi`, and an MCP client has the same mapper as the read-only tool `findagent_import_openapi` (it saves nothing; pass its `tools`, `credential_slots` and `guardrails` to `findagent_create_draft`) and maps each operation (GET, POST, PUT, PATCH, DELETE) to a tool. It needs an `https://` server URL. It stops at 40 operations and says so in a warning ("only the first 40 were imported"), and the first 40 in document order are rarely the right 40. So select the operations before you import: keep the ones a model needs (read and search first), drop the admin and bulk ones, and write the trimmed spec yourself, or build the tool list by hand in the shape of section 3. Then read each imported tool: a generated description is a starting point, and the annotations (read-only, destructive) still need your judgement.
+
+Dated note (checked 2026-10-29 on OpenAI's own FAQ, https://help.openai.com/en/articles/20001519-custom-gpt-retirement-and-migration-faq): OpenAI schedules custom GPTs to retire on Dec 11, 2026 (Feb 11, 2027 for FedRAMP workspaces and approved deferrals) and moves them to ChatGPT plugins. Custom actions do not transfer there, and OpenAI suggests rebuilding them, possibly as an MCP server. None of that changes what FindAgent does: an OpenAPI spec still becomes tools through the OpenAPI import, so treat a Custom GPT's Actions as the OpenAPI source for an actions agent.
 
 ## 3. A tool
 
@@ -50,7 +52,7 @@ The web import accepts an OpenAPI 3.x spec (JSON or YAML) with source `openapi`,
 
 ## 6. Gates (paste real output)
 
-1. Run `npx --yes @findagent/cli@latest check <repo-dir>` (the platform's whole-repo check, offline: it runs the same action and credential checks on a package's `plugin.json` or a doer's `findagent.json`), and lint a lone manifest or `plugin.json` with `npx --yes @findagent/cli@latest lint <path>`. Paste the result.
+1. Run `npx --yes @findagent/cli@latest check <repo-dir>` (the platform's whole-repo check, offline: it runs the same action, host and credential rules the publish step applies to a package's `plugin.json` or a doer's `findagent.json`, and, in a release that carries those rules, fails an actions-only package with `nothing_to_package`), and lint a lone manifest or `plugin.json` with `npx --yes @findagent/cli@latest lint <path>`. Paste the result.
 2. Contract test per tool: required args missing, wrong type, the URL host is inside `allowed_hosts` of the slot it names (a test that fails when an action host is not covered), no `http://`, annotations consistent with the method (a POST/PUT/PATCH/DELETE is not readOnly).
 3. Live check (not a mock of your own code): call each GET tool once against the real API with a real key the CALLER provides through an env var you never print, from a scratch script; report the real status codes, including a 401/404 path. If no key is available say "not checked: no credential" per tool; never score it as passed.
 4. Mutation-check the contract tests (break a host, a scheme, an annotation; assert the break landed and the test went red).
@@ -58,7 +60,7 @@ The web import accepts an OpenAPI 3.x spec (JSON or YAML) with source `openapi`,
 
 ## 7. Handoff
 
-Never submit or publish. Report the files, schema output, live results, deferrals. How to submit: web `/submit` (Editor door writes this exact shape; Upload/GitHub for a repo) or MCP `findagent_create_draft` then `findagent_submit_for_review`; scan + human review; a platform admin's own submission auto-approves on a clean scan, anyone else waits for human review.
+Never submit or publish. Report the files, schema output, live results, deferrals. How to submit: web `/submit` (Editor door writes this exact shape; Upload/GitHub for a repo) or MCP `findagent_create_draft` (a `findagent.json` doer) or `findagent_create_package_draft` (a package whose `plugin.json` declares the actions), then `findagent_submit_for_review`; scan + human review; a platform admin's own submission auto-approves on a clean scan, anyone else waits for human review.
 
 ## Manifest gate (run before you report)
 
