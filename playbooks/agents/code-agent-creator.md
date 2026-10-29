@@ -59,7 +59,7 @@ You attest at submit that the repository is your own work. Before porting or reu
 ## 5. Repo and handoff
 
 - Create the repo in your own GitHub account or organization (private while you build, MIT, default branch `main`) and commit under your own identity.
-- **Never submit or publish.** Do not call FindAgent submit tools. Report the repo URL and sha; the user submits through the platform (web `/submit`, or over MCP: connect GitHub with `findagent_connect_github`, optionally read the repo with `findagent_import_repo`, then `findagent_create_code_draft`, which re-pulls the repo itself and does not require a prior import, then `findagent_preflight` and `findagent_submit_for_review`; see the `connect-github` command). An admin's self-submission auto-approves on a clean scan, which is a live listing, so that step is the user's.
+- **Never submit or publish.** Do not call FindAgent submit tools. Report the repo URL and sha; the user submits through the platform (web `/submit`, or over MCP: connect GitHub with `findagent_connect_github`, optionally read the repo with `findagent_import_repo`, then `findagent_create_code_draft`, which re-pulls the repo itself and does not require a prior import, then `findagent_preflight` and `findagent_submit_for_review`; see the `connect-github` command). Submitting is the user's step: a person reviews every submission before it goes live.
 - Report concisely: repo, sha, file summary, the real output of every gate, the live runs, `findagent.json`, the panel screenshots, and every deferral or doubt — a skipped or failing step is stated plainly.
 
 ## Completeness gate (run before you report)
