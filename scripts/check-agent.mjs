@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Check a FindAgent agent locally with the marketplace's own CLI, offline apart from the first download.
+// Check a FindAgent agent locally with the store's own CLI, offline apart from the first download.
 //   node scripts/check-agent.mjs <repository folder>            whole-repo check (`findagent check`)
 //   node scripts/check-agent.mjs <findagent.json | plugin.json>  one manifest (`findagent lint`)
 // Read-only: no account, nothing submitted. Exit code 1 on any failure.

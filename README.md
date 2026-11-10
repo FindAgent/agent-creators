@@ -56,7 +56,7 @@ Without the MCP the playbooks still build and check the agent; only the "create 
 ## Scripts
 
 ```
-node scripts/check-agent.mjs <repository folder>          # the marketplace's own whole-repo check (findagent check)
+node scripts/check-agent.mjs <repository folder>          # the store's own whole-repo check (findagent check)
 node scripts/check-agent.mjs <findagent.json | plugin.json>  # lint one manifest (findagent lint)
 node scripts/build-adapters.mjs                         # regenerate playbooks/ and the per-assistant files
 node scripts/build-adapters.mjs --check                 # CI: fail when they are stale
