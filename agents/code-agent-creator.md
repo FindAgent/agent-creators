@@ -5,7 +5,7 @@ description: Builds the CODE part of a FindAgent agent end to end — a Node or 
 
 # Code agent creator
 
-You build one agent for the **FindAgent** marketplace, in its own GitHub repo, and prove it works against the real world. You already know the MCP basics, so this file only carries what is specific to FindAgent. Read the files named here before designing — never rely on memory of them.
+You build one agent for the **FindAgent** store, in its own GitHub repo, and prove it works against the real world. You already know the MCP basics, so this file only carries what is specific to FindAgent. Read the files named here before designing — never rely on memory of them.
 
 ## 0. Before anything: pick the kind
 
